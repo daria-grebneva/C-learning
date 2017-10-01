@@ -4,42 +4,60 @@
 
 using namespace std;
 
-struct roots {
+struct RootsInfo
+{
 public:
 	float first;
 	float second;
-	int number;
+	int numberOfRoots;
 };
 
-roots Solve_2(int a, int b, int c) {
-	float D = b * b - 4 * a * c;
-	roots Root;
-	if (D > 0) {
-		Root.first = (-b + sqrt(D)) / (2 * a);
-		Root.second = (-b - sqrt(D)) / (2 * a);
-		Root.number = 2;
+RootsInfo Solve_2(int a, int b, int c)
+{	
+	RootsInfo root;
+	if (a == 0) 
+	{
+		root.numberOfRoots = 1;
+		root.first = (-b / c);
 	}
-	else if (D == 0) {
-		Root.number = 1;
-		Root.first = (-b + sqrt(D)) / (2 * a);
+	else 
+	{
+		const float D = b * b - 4 * a * c;
+		if (D > 0)
+		{
+			root.numberOfRoots = 2;
+			root.first = (-b + sqrt(D)) / (2 * a);
+			root.second = (-b - sqrt(D)) / (2 * a);
+		}
+		else if (D == 0)
+		{
+			root.numberOfRoots = 1;
+			root.first = (-b + sqrt(D)) / (2 * a);
+		}
+		else
+		{
+			root.numberOfRoots = 0;
+		}
 	}
-	else {
-		Root.number = 0;
-	}
-	return Root;
+	return root;
 }
 
-int main() {
+int main()
+{
 	int a, b, c;
 	cin >> a >> b >> c;
-	if (Solve_2(a, b, c).number == 2) {
-		cout << "First root: " << Solve_2(a, b, c).first << ' ' << "Second root: " << Solve_2(a, b, c).second;
+	RootsInfo result = Solve_2(a, b, c);
+	if (result.numberOfRoots == 2)
+	{
+		cout << "First root: " << result.first << ' ' << "Second root: " << result.second << endl;
 	}
-	else if (Solve_2(a, b, c).number == 1) {
-		cout << "Root: " << Solve_2(a, b, c).first;
+	else if (result.numberOfRoots == 1)
+	{
+		cout << "Root: " << result.first << endl;
 	}
-	else if (Solve_2(a, b, c).number == 0) {
-		cout << "No real roots";
+	else if (result.numberOfRoots == 0)
+	{
+		cout << "No real roots" << endl;
 	}
 	return 0;
 }

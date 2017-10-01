@@ -5,24 +5,24 @@ using namespace std;
 int main()
 {
 	int n;
-	cin >> n;
-	if ((1 <= n) && (n <= 100)) {
-		if ((n % 3 == 0) && (n % 5 == 0)) {
-			cout << "FizzBuzz";
+	for (n = 1; n < 101; ++n) 
+	{
+		if ((n % 3 == 0) && (n % 5 == 0)) 
+		{
+			cout << "FizzBuzz" << endl;
 		}
-		else if (n % 3 == 0) {
-			cout << "Fizz";
+		else if (n % 3 == 0) 
+		{
+			cout << "Fizz" << endl;
 		}
-		else if (n % 5 == 0) {
-			cout << "Buzz";
+		else if (n % 5 == 0) 
+		{
+			cout << "Buzz" << endl;
 		}
-		else {
-			cout << n;
+		else 
+		{
+			cout << n << endl;
 		}
 	}
-	else {
-		cout << "Your number is beyond the allowable values";
-	}
-
 	return 0;
 }

@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include <iostream>
 
-//Если использовать тип данных int - можно вводить числа только до 16
-
 using namespace std;
 
 int Factorial(int n) {
@@ -10,7 +8,7 @@ int Factorial(int n) {
 		return 1;
 	}
 	else {	
-		return Factorial(n - 1) * (n);
+		return Factorial(n - 1) * n;
 	}
 	
 }
@@ -19,6 +17,13 @@ int main()
 {
 	int n;
 	cin >> n;
-	cout << Factorial(n);
+	if (n > 0)
+	{
+		cout << Factorial(n) << endl;
+	}
+	else
+	{
+		cout << "Your number must be more than 0" << endl;
+	}
 	return 0;
 }
