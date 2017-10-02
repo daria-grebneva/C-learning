@@ -3,27 +3,23 @@
 
 using namespace std;
 
-int Factorial(int n) {
-	if (n == 1) {
-		return 1;
+unsigned int Factorial(int n) 
+{
+	int result = 1;
+	if ((n != 1) && (n != 0)) 
+	{
+		result = Factorial(n - 1) * n;
 	}
-	else {	
-		return Factorial(n - 1) * n;
-	}
-	
+	return result;
 }
 
 int main()
 {
-	int n;
+	unsigned int n;
 	cin >> n;
-	if (n > 0)
+	if (n >= 0)
 	{
 		cout << Factorial(n) << endl;
-	}
-	else
-	{
-		cout << "Your number must be more than 0" << endl;
 	}
 	return 0;
 }
