@@ -3,7 +3,7 @@
 
 using namespace std;
 
-unsigned int Factorial(int n) 
+unsigned Factorial(unsigned n)
 {
 	int result = 1;
 	if ((n != 1) && (n != 0)) 
@@ -15,11 +15,8 @@ unsigned int Factorial(int n)
 
 int main()
 {
-	unsigned int n;
+	int n;
 	cin >> n;
-	if (n >= 0)
-	{
-		cout << Factorial(n) << endl;
-	}
+	(n >= 0) ? cout << Factorial(n) << endl : cout << "Your input value cannot be less than zero" << endl; 
 	return 0;
 }
