@@ -5,9 +5,7 @@ using namespace std;
 
 unsigned Factorial(unsigned n)
 {
-	unsigned result = 1;
-	((n != 1) && (n != 0)) ? result = Factorial(n - 1) * n : 1;
-	return result;
+	return (n != 0) ? (Factorial(n - 1) * n) : 1;
 }
 
 int main()
