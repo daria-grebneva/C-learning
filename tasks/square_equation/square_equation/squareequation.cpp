@@ -9,13 +9,13 @@ struct RootsInfo
 public:
 	float first;
 	float second;
-	unsigned int numberOfRoots;
+	unsigned numberOfRoots;
 };
 
 RootsInfo Solve2(int a, int b, int c)
 {	
 	RootsInfo root;
-	const float D = pow(b, 2)- 4 * a * c;
+	const float D = pow(b, 2) - 4 * a * c;
 	if (D > 0)
 	{
 		root.numberOfRoots = 2;
@@ -25,7 +25,7 @@ RootsInfo Solve2(int a, int b, int c)
 	else if (D == 0)
 	{
 		root.numberOfRoots = 1;
-		root.first = (-b) / (2 * a);
+		root.first = -b / (2 * a);
 	}
 	else
 	{
@@ -59,5 +59,3 @@ int main()
 	}
 	return 0;
 }
-
-
