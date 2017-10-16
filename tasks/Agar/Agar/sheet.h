@@ -13,10 +13,3 @@ static const auto STEP = 6.f;
 
 static const sf::Color GREEN = { 0, 127, 0 };
 static const sf::Color WHITE = { 255, 255, 255 };
-
-enum class DirectionX
-{
-	None = 0,
-	Left,
-	Right
-};

@@ -10,19 +10,13 @@ public:
 	void DoGameLoop();
 
 private:
-	void Update();
+	void Update(sf::Vector2f pos);
 	void Render();
 
 	void CheckEvents();
 	void CheckMouseEvents(const sf::Event & event);
-	sf::Vector2f CheckMouseMove(const sf::Event & event/*, bool & isNeedUpdate*/);
-	//void CheckKeyReleased(const sf::Event & event, bool & isNeedUpdate);
-
-	//void CheckCylinderEffect();
 
 	sf::RenderWindow m_window;
-
+	sf::Vector2i m_mousePosition;
 	CAgar m_hero;
-	//bool m_isLeft = false;
-	//bool m_isRight = false;
 };
