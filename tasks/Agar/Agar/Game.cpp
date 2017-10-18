@@ -2,7 +2,6 @@
 
 #include "Game.h"
 #include "sheet.h"
-#include <iostream>
 
 CGame::CGame()
 	:m_window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), WINDOW_TITLE, WINDOW_STYLE)
@@ -16,7 +15,7 @@ void CGame::DoGameLoop()
 	while (m_window.isOpen())
 	{
 		CheckEvents();
-		Update(sf::Vector2f(m_mousePosition));
+		Update();
 		Render();
 		m_window.display();
 	}
@@ -40,13 +39,13 @@ void CGame::CheckMouseEvents(const sf::Event & event)
 {
 	if (event.type == sf::Event::MouseMoved)
 	{
-		m_mousePosition = { event.mouseMove.x, event.mouseMove.y };
+		mousePosition = { event.mouseMove.x, event.mouseMove.y };
 	}
 }
 
-void CGame::Update(sf::Vector2f m_mousePosition)
+void CGame::Update()
 {
-	m_hero.Update(m_mousePosition);
+	m_hero.Update(sf::Vector2f(mousePosition));
 }
 
 void CGame::Render()

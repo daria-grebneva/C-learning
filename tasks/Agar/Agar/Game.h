@@ -10,13 +10,13 @@ public:
 	void DoGameLoop();
 
 private:
-	void Update(sf::Vector2f pos);
+	void Update();
 	void Render();
 
 	void CheckEvents();
 	void CheckMouseEvents(const sf::Event & event);
 
 	sf::RenderWindow m_window;
-	sf::Vector2i m_mousePosition;
+	sf::Vector2i mousePosition;
 	CAgar m_hero;
 };

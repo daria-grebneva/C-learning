@@ -9,7 +9,5 @@ static const float AGAR_RADIUS = 30;
 static const sf::Vector2f AGAR_SIZE = { AGAR_RADIUS,  AGAR_RADIUS };
 static const sf::Vector2f AGAR_INITIAL_POSITION = 0.5f * (sf::Vector2f(WINDOW_SIZE) - AGAR_SIZE);
 
-static const auto STEP = 6.f;
-
 static const sf::Color GREEN = { 0, 127, 0 };
 static const sf::Color WHITE = { 255, 255, 255 };
