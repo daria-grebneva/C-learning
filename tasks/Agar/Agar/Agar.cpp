@@ -24,3 +24,8 @@ void CAgar::SetPosition(const sf::Vector2f & pos)
 {
 	m_body.setPosition(pos);
 }
+
+sf::Vector2f CAgar::GetPosition() const
+{
+	return m_body.getPosition();
+}

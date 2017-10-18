@@ -2,17 +2,17 @@
 
 #include "sheet.h"
 
-class CAgar
+class CEnemy
 {
 public:
-	CAgar();
+	CEnemy();
 
-	void Update(const sf::Vector2f & pos);
-	void Draw(sf::RenderWindow & window);
+	void Update() const;
+	void Draw(sf::RenderWindow & window) const;
+
 	void SetPosition(const sf::Vector2f & pos);
 	sf::Vector2f GetPosition() const;
 
 private:
-
 	sf::CircleShape m_body;
-};
+}; 

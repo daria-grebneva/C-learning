@@ -1,4 +1,13 @@
-﻿  Agar.vcxproj -> E:\C-learning\tasks\Agar\x64\Release\Agar.exe
+﻿  Agar.cpp
+  Enemies.cpp
+  Game.cpp
+  main.cpp
+  Generating code
+  62 of 127 functions (48.8%) were compiled, the rest were copied from previous compilation.
+    31 functions were new in current compilation
+    11 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Agar.vcxproj -> E:\C-learning\tasks\Agar\x64\Release\Agar.exe
   Agar.vcxproj -> E:\C-learning\tasks\Agar\x64\Release\Agar.pdb (Full PDB)
   E:\SFML-2.4.2\bin\Release\sfml-audio-2.dll
   E:\SFML-2.4.2\bin\Release\sfml-graphics-2.dll
