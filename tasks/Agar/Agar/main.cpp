@@ -4,6 +4,7 @@
 
 int main()
 {
+	srand(unsigned(time(nullptr)));
 	CGame game;
 	game.DoGameLoop();
 

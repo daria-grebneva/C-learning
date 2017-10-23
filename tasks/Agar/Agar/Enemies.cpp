@@ -1,10 +1,11 @@
 #include "stdafx.h"
 
 #include "Enemies.h"
+#include "Utils.h"
 
 CEnemy::CEnemy()
 {
-	m_body.setFillColor(VIOLET);
+	m_body.setFillColor(GetRandomColor());
 	m_body.setRadius(ENEMY_RADIUS);
 }
 
@@ -26,4 +27,9 @@ void CEnemy::SetPosition(const sf::Vector2f & pos)
 sf::Vector2f CEnemy::GetPosition() const
 {
 	return m_body.getPosition();
+}
+
+float CEnemy::GetRadius()
+{
+	return m_body.getRadius();
 }

@@ -2,7 +2,9 @@
 
 #include "Game.h"
 #include "sheet.h"
-
+#include "Utils.h"
+#include <iostream>
+using namespace std;
 
 CGame::CGame()
 	:m_window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), WINDOW_TITLE, WINDOW_STYLE)
@@ -12,14 +14,13 @@ CGame::CGame()
 
 	for (auto & enemy : m_enemies)
 	{
-		enemy.SetPosition(ENEMY_INITIAL_POSITION);
+		enemy.SetPosition(GetRandomCoordinate());
 	}
-	m_enemies[0].SetPosition(AGAR_INITIAL_POSITION);
-	m_enemies[1].SetPosition(sf::Vector2f(150, 600));
-	m_enemies[2].SetPosition(sf::Vector2f(-200, 400));
-	m_enemies[3].SetPosition(sf::Vector2f(270, -500));
-	m_enemies[4].SetPosition(sf::Vector2f(90, 40));
-	m_enemies[5].SetPosition(sf::Vector2f(340, -100));
+
+	for (auto & meal : m_meal)
+	{
+		meal.SetPosition(GetRandomCoordinate());
+	}
 
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 }
@@ -54,13 +55,17 @@ void CGame::CheckMouseEvents(const sf::Event & event)
 {
 	if (event.type == sf::Event::MouseMoved)
 	{
-		mousePosition = { event.mouseMove.x, event.mouseMove.y };
+		m_mousePosition = { event.mouseMove.x, event.mouseMove.y };
 	}
 }
 
 void CGame::Update()
 {
-	m_hero.Update(sf::Vector2f(mousePosition));	
+	m_hero.Update(sf::Vector2f(m_mousePosition));
+	for (auto & meal : m_meal)
+	{
+		meal.Update();
+	}
 	for (auto & enemy : m_enemies)
 	{
 		enemy.Update();
@@ -72,9 +77,49 @@ void CGame::Render()
 {
 	m_window.clear(WHITE);
 
+	for (const auto & meal : m_meal)
+	{
+		meal.Draw(m_window);
+	}
 	for (const auto & enemy : m_enemies)
 	{
 		enemy.Draw(m_window);
 	}
 	m_hero.Draw(m_window);
 }
+
+//bool CGame::PositionRight(const CEnemy & enemy, const CAgar & player, const int radius) 
+//{
+//	if ((enemy.GetPosition().x - player.GetPosition().x) <= radius && (enemy.GetPosition().x + player.GetRadius() / 2 - player.GetPosition.x) > 0)
+//	{
+//		return true;
+//	}
+//	return false;
+//}
+
+//bool CGame::PositionLeft(const CEnemy & enemy, const CAgar & player, const int radius)
+//{
+//	if ((player.GetPosition().x - enemy.GetPosition().x) <= radius && (player.GetPosition().x + player.GetRadius() / 2 - enemy.GetPosition().x) > 0)
+//	{
+//		return true;
+//	}
+//	return false;
+//}
+//
+//bool CGame::PositionUp(const CEnemy & enemy, const CAgar & player, const int radius) 
+//{
+//	if ((player.GetPosition().y - enemy.GetPosition().y) < radius && (player.GetPosition().y + enemy.GetRadius() / 2 - enemy.GetPosition().y) > 0)
+//	{
+//		return true;
+//	}
+//	return false;
+//}
+//
+//bool CGame::PositionDown(const CEnemy & enemy, const CAgar & player, const int radius) 
+//{
+//	if ((enemy.GetPosition().y - player.GetPosition().y) < radius && (enemy.GetPosition().y + player.GetRadius() / 2 - player.GetPosition().y) > 0)
+//	{
+//		return true;
+//	}
+//	return false;
+//}
