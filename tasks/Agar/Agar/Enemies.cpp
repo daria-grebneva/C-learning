@@ -29,7 +29,7 @@ sf::Vector2f CEnemy::GetPosition() const
 	return m_body.getPosition();
 }
 
-float CEnemy::GetRadius()
+float CEnemy::GetRadius() const
 {
 	return m_body.getRadius();
 }

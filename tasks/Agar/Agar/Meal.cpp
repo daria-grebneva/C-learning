@@ -29,7 +29,7 @@ sf::Vector2f CMeal::GetPosition() const
 	return m_body.getPosition();
 }
 
-float CMeal::GetRadius()
+float CMeal::GetRadius() const
 {
 	return m_body.getRadius();
 }

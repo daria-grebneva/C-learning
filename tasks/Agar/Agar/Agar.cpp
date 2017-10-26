@@ -11,8 +11,11 @@ CAgar::CAgar()
 	m_body.setPosition(AGAR_INITIAL_POSITION);
 }
 
-void CAgar::Update(const sf::Vector2f & pos)
+void CAgar::Update(sf::Vector2f & pos, float dt)
 {
+	m_alpha += ANGULAR_VELOCITY * dt;
+	//pos = GetPosition() - pos;
+	pos = { pos.x * m_alpha , pos.y * m_alpha };
 	m_body.setPosition(pos);
 }
 
@@ -26,7 +29,7 @@ sf::Vector2f CAgar::GetPosition() const
 	return m_body.getPosition();
 }
 
-float CAgar::GetRadius()
+float CAgar::GetRadius() const
 {
 	return m_body.getRadius();
 }

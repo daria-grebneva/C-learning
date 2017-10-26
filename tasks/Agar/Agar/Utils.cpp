@@ -8,8 +8,7 @@ sf::Color GetRandomColor()
 	const auto G = rand() % 256;
 	const auto B = rand() % 256;
 
-	return
-	{
+	return {
 		sf::Uint8(R),
 		sf::Uint8(G),
 		sf::Uint8(B)
@@ -17,9 +16,6 @@ sf::Color GetRandomColor()
 }
 sf::Vector2f GetRandomCoordinate()
 {
-	sf::Vector2u randomCoord = { 1 + rand() % (2 * WINDOW_SIZE.x - 1), 1 + rand() % (2 * WINDOW_SIZE.y - 1) };
-	return
-	{
-		sf::Vector2f(randomCoord)
-	};
+	sf::Vector2i randomCoord = {rand() % (WINDOW_FRAME.x), rand() % (WINDOW_FRAME.y) };
+	return { sf::Vector2f(randomCoord) };
 }

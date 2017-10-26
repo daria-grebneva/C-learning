@@ -12,7 +12,7 @@ public:
 
 	void SetPosition(const sf::Vector2f & pos);
 	sf::Vector2f GetPosition() const;
-	float GetRadius();
+	float GetRadius() const;
 
 private:
 	sf::CircleShape m_body;

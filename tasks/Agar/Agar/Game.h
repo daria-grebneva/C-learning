@@ -3,7 +3,6 @@
 #include "Agar.h"
 #include "Enemies.h"
 #include "Meal.h"
-#include <array>
 
 class CGame
 {
@@ -13,16 +12,22 @@ public:
 	void DoGameLoop();
 
 private:
-	void Update();
+	void Update(float dt);
 	void Render();
 
 	void CheckEvents();
 	void CheckMouseEvents(const sf::Event & event);
 
-	bool PositionRight(const CEnemy & enemy, const CAgar & player, const int radius);
-	bool PositionLeft(const CEnemy & enemy, const CAgar & player, const int radius);
-	bool PositionUp(const CEnemy & enemy, const CAgar & player, const int radius);
-	bool PositionDown(const CEnemy & enemy, const CAgar & player, const int radius);
+	bool CheckPositionRight(const CEnemy & enemy, const CAgar & player, const int radius) const;
+	bool CheckPositionLeft(const CEnemy & enemy, const CAgar & player, const int radius) const;
+	bool CheckPositionUp(const CEnemy & enemy, const CAgar & player, const int radius) const;
+	bool CheckPositionDown(const CEnemy & enemy, const CAgar & player, const int radius) const;
+	bool CheckRadiusVisibility(const CEnemy & enemy, const CAgar & player, const int radius) const;
+	sf::Vector2f FindNearestDotCoordinate(const CEnemy & enemy, const CMeal & meal);
+	bool CheckCollision(const CEnemy & enemy, const CMeal & meal);
+	bool CanEat(const CEnemy & enemy, const CMeal & meal);
+	//void ProcessCollisions(const CEnemy & enemy, const CAgar & player, const CMeal & meal);
+	//void EnemiesMove(const CEnemy & enemy, const CAgar & player, const CMeal & meal);
 
 	sf::RenderWindow m_window;
 	sf::Vector2i m_mousePosition;
@@ -30,4 +35,6 @@ private:
 	std::array<CEnemy, NUMBER_ENEMIES> m_enemies;
 	std::array<CMeal, NUMBER_MEAL> m_meal;
 	sf::View m_view;
+	sf::Clock m_clock;
+	
 };
