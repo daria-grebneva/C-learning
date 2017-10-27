@@ -11,12 +11,14 @@ CAgar::CAgar()
 	m_body.setPosition(AGAR_INITIAL_POSITION);
 }
 
-void CAgar::Update(sf::Vector2f & pos, float dt)
+void CAgar::Update(sf::Vector2i & pos, float dt)
 {
-	m_alpha += ANGULAR_VELOCITY * dt;
-	//pos = GetPosition() - pos;
-	pos = { pos.x * m_alpha , pos.y * m_alpha };
-	m_body.setPosition(pos);
+	sf::Vector2f direction = sf::Vector2f(pos) - GetPosition();
+	float distance = sqrt(pow(direction.x, 2) + pow(direction.y, 2));
+	if (distance > 0) {
+		sf::Vector2f(pos) += direction * m_acceleration * dt;
+	}
+	m_body.setPosition(sf::Vector2f(pos));
 }
 
 void CAgar::Draw(sf::RenderWindow & window)

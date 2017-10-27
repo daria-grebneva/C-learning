@@ -57,12 +57,13 @@ void CGame::CheckMouseEvents(const sf::Event & event)
 	if (event.type == sf::Event::MouseMoved)
 	{
 		m_mousePosition = { event.mouseMove.x, event.mouseMove.y };
+
 	}
 }
 
 void CGame::Update(float dt)
 {
-	m_hero.Update(sf::Vector2f(m_mousePosition), dt);
+	m_hero.Update(m_mousePosition, dt);
 	for (auto & meal : m_meal)
 	{
 		meal.Update();
@@ -159,10 +160,7 @@ bool CGame::CheckCollision(const CEnemy & enemy, const CMeal & meal)
 		&& (((enemy.GetPosition().y - enemy.GetRadius() - meal.GetRadius()) < meal.GetPosition().y)
 			&& (meal.GetPosition().y < (enemy.GetPosition().y + enemy.GetRadius() + meal.GetRadius())))) 
 	{
-		//predator.radius = predator.radius + victim.radius * victim.width;
-	/*	if (predator.acceleration < LOW_ACCELERATION) {
-			predator.acceleration = predator.acceleration - predator.acceleration * victim.width;
-		}*/
+		//доделать радиус
 		return true;
 	}
 }
