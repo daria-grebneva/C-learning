@@ -22,7 +22,7 @@ CGame::CGame()
 		meal.SetPosition(GetRandomCoordinate());
 	}
 
-	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
+	//m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 }
 
 void CGame::DoGameLoop()
@@ -33,7 +33,7 @@ void CGame::DoGameLoop()
 		CheckEvents();
 		Update(dt);
 		Render();
-		m_window.setView(m_view);
+		//m_window.setView(m_view);
 		m_window.display();
 	}
 }
@@ -57,7 +57,6 @@ void CGame::CheckMouseEvents(const sf::Event & event)
 	if (event.type == sf::Event::MouseMoved)
 	{
 		m_mousePosition = { event.mouseMove.x, event.mouseMove.y };
-
 	}
 }
 
@@ -66,13 +65,11 @@ void CGame::Update(float dt)
 	m_hero.Update(m_mousePosition, dt);
 	for (auto & meal : m_meal)
 	{
-		meal.Update();
+		//EnemiesMove(m_hero, meal, dt);
 	}
-	for (auto & enemy : m_enemies)
-	{
-		enemy.Update();
-	}
-	m_view.setCenter(m_hero.GetPosition());
+	ProcessCollisions(m_hero);
+	
+	//m_view.setCenter(m_hero.GetPosition());
 }
 
 void CGame::Render()
@@ -90,67 +87,122 @@ void CGame::Render()
 	m_hero.Draw(m_window);
 }
 
+void CGame::EnemiesMove(const CAgar & player, const CMeal & meal, float dt) 
+{
+	for (auto & enemy : m_enemies) 
+	{
+		if (CheckRadiusVisibility(enemy, player, CONVERGENCE_RADIUS))
+		{
+			enemy.Update(sf::Vector2f(player.GetPosition().x, player.GetPosition().y), dt);
+		}
+		else 
+		{
+			for (auto & enemy : m_enemies) 
+			{
+				enemy.Update(FindNearestDotCoordinate(enemy, meal), dt);
+			}
+		}
+	}
+}
 
-//void CGame::EnemiesMove(const CEnemy & enemy, const CAgar & player, const CMeal & meal) 
-//{
-//	for (auto & enemy : m_enemies) 
-//	{
-//		if (CheckRadiusVisibility(player, enemy, CONVERGENCE_RADIUS))
-//		{
-//			enemy.SetPosition(sf::Vector2f(player.GetPosition().x, player.GetPosition().y));
-//		}
-//		else 
-//		{
-//			for (auto & enemy : m_enemies) 
-//			{
-//				enemy.SetPosition(FindNearestDotCoordinate(enemy, meal));
-//			}
-//		}
-//	}
-//}
-//
-//void CGame::ProcessCollisions(const CEnemy & enemy, const CAgar & player, const CMeal & meal) 
-//{
-//	Съедание врагов и игрока
-//	for (auto & enemy : m_enemies) 
-//	{
-//		if (CanEat(enemy, player) == true) 
-//		{
-//			this._endGame();
-//		}
-//		else if (CanEat(player, enemy) == true)
-//		{
-//			/*this.enemies.splice(j, 1);
-//			this.numberEatenEnemies++;
-//			this._addEnemy();*/
-//		}
-//		else for (auto & enemy : m_enemies) 
-//		{
-//			if (СanEat(enemy, enemy) == true) 
-//			{
-//				/*this.enemies.splice(j, 1);
-//				this._addEnemy();*/
-//			}
-//		}
-//	}
-//
-//	Съедание точки
-//	for (auto & meal : m_meal) 
-//	{
-//		for (auto & enemy : m_enemies) 
-//		{
-//			if (СanEat(player, meal) == true || CanEat(enemy, meal) == true) 
-//			{
-//		/*		this.dots.splice(i, 1);
-//				this._addDot();*/
-//			}
-//		}
-//	}
-//}
+void CGame::ProcessCollisions(CAgar & player) 
+{
+	for (auto & enemy : m_enemies) 
+	{
+		if (CanEat(enemy, player)) 
+		{
+			//end of Game
+		}
+		else if (CanEat(player, enemy))
+		{
+			float newRadius = player.GetRadius() + sqrt(enemy.GetRadius());
+			player.SetRadius(newRadius);
+			enemy.SetPosition(GetRandomCoordinate());
+		}
+		else for (auto & enemy : m_enemies) 
+		{
+			//change enemy coordinate
+		}
+	}
+	for (auto & meal : m_meal) 
+	{
+		for (auto & enemy : m_enemies) 
+		{
+			if (CanEat(player, meal))
+			{
+				float newRadius = player.GetRadius() + sqrt(meal.GetRadius());
+				player.SetRadius(newRadius);
+				meal.SetPosition(GetRandomCoordinate());
+			}
+			else if (CanEat(enemy, meal))
+			{
+				float newRadius = enemy.GetRadius() + sqrt(meal.GetRadius());
+				enemy.SetRadius(newRadius);
+				meal.SetPosition(GetRandomCoordinate());
+			}
+		}
+	}
+}
 
 bool CGame::CanEat(const CEnemy & enemy, const CMeal & meal) 
 {
-	return ((enemy.GetRadius() > meal.GetRadius()) && (CheckCollision(enemy, meal) == true));
+	return ((enemy.GetRadius() > meal.GetRadius()) && (CheckCollision(enemy, meal)));
+}
+
+bool CGame::CanEat(const CAgar & player, const CMeal & meal)
+{
+	return ((player.GetRadius() > meal.GetRadius()) && (CheckCollision(player, meal)));
+}
+
+bool CGame::CanEat(const CAgar & player, const CEnemy & enemy)
+{
+	return ((player.GetRadius() > enemy.GetRadius()) && (CheckCollision(player, enemy)));
+}
+
+bool CGame::CanEat(const CEnemy & enemy, const CAgar & player)
+{
+	return ((enemy.GetRadius() > player.GetRadius()) && (CheckCollision(enemy, player)));
+}
+
+//bool CGame::CanEat(const CEnemy & enemy, const CEnemy & enemy)
+//{
+//	return ((enemy.GetRadius() > enemy.GetRadius()) && (CheckCollision(enemy, enemy)));
+//}
+
+bool CGame::CheckCollision(const CEnemy & enemy, const CAgar & player)
+{
+	if ((((enemy.GetPosition().x - enemy.GetRadius() / 2 - player.GetRadius() / 2) < player.GetPosition().x)
+		&& (player.GetPosition().x < (enemy.GetPosition().x + enemy.GetRadius() / 2 + player.GetRadius() / 2)))
+		&& (((enemy.GetPosition().y - enemy.GetRadius() - player.GetRadius()) < player.GetPosition().y)
+			&& (player.GetPosition().y < (enemy.GetPosition().y + enemy.GetRadius() + player.GetRadius()))))
+	{
+		return true;
+	}
+	else return false;
+}
+
+bool CGame::CheckCollision(const CAgar & player, const CEnemy & enemy)
+{
+	if ((((player.GetPosition().x - player.GetRadius() / 2 - enemy.GetRadius() / 2) < enemy.GetPosition().x)
+		&& (enemy.GetPosition().x < (player.GetPosition().x + player.GetRadius() / 2 + enemy.GetRadius() / 2)))
+		&& (((player.GetPosition().y - player.GetRadius() - enemy.GetRadius()) < enemy.GetPosition().y)
+			&& (enemy.GetPosition().y < (player.GetPosition().y + player.GetRadius() + enemy.GetRadius()))))
+	{
+		return true;
+	}
+	else return false;
+}
+
+bool CGame::CheckCollision(const CAgar & player, const CMeal & meal)
+{
+	if ((((player.GetPosition().x - player.GetRadius() / 2 - meal.GetRadius() / 2) < meal.GetPosition().x)
+		&& (meal.GetPosition().x < (player.GetPosition().x + player.GetRadius() / 2 + meal.GetRadius() / 2)))
+		&& (((player.GetPosition().y - player.GetRadius() - meal.GetRadius()) < meal.GetPosition().y)
+			&& (meal.GetPosition().y < (player.GetPosition().y + player.GetRadius() + meal.GetRadius()))))
+	{
+		return true;
+	}
+	else return false;
 }
 
 bool CGame::CheckCollision(const CEnemy & enemy, const CMeal & meal) 
@@ -160,9 +212,9 @@ bool CGame::CheckCollision(const CEnemy & enemy, const CMeal & meal)
 		&& (((enemy.GetPosition().y - enemy.GetRadius() - meal.GetRadius()) < meal.GetPosition().y)
 			&& (meal.GetPosition().y < (enemy.GetPosition().y + enemy.GetRadius() + meal.GetRadius())))) 
 	{
-		//доделать радиус
 		return true;
 	}
+	else return false;
 }
 
 sf::Vector2f CGame::FindNearestDotCoordinate(const CEnemy & enemy, const CMeal & meal)
@@ -172,6 +224,7 @@ sf::Vector2f CGame::FindNearestDotCoordinate(const CEnemy & enemy, const CMeal &
 	float newCoordinateX = 0;
 	float newCoordinateY = 0;
 	unsigned numberNearestDot = 0;
+	sf::Vector2f nearestMeal = { 0, 0 };
 	for (unsigned i = 0; i != NUMBER_MEAL; i++) 
 	{
 		newCoordinateX = abs(enemy.GetPosition().x- meal.GetPosition().x);
@@ -183,9 +236,10 @@ sf::Vector2f CGame::FindNearestDotCoordinate(const CEnemy & enemy, const CMeal &
 			numberNearestDot = i;
 		}
 		if (i == NUMBER_MEAL - 1) {
-			return { meal.GetPosition().x, meal.GetPosition().y };
+			nearestMeal = { meal.GetPosition().x, meal.GetPosition().y };
 		}
 	}
+	return nearestMeal;
 }
 
 bool CGame::CheckRadiusVisibility(const CEnemy & enemy, const CAgar & player, const int radius) const

@@ -9,9 +9,16 @@ CEnemy::CEnemy()
 	m_body.setRadius(ENEMY_RADIUS);
 }
 
-void CEnemy::Update() const
+void CEnemy::Update(const sf::Vector2f & pos, float dt)
 {
+	sf::Vector2f enemyPosition(pos);
+	sf::Vector2f direction = enemyPosition - GetPosition();
 
+	const auto distance = std::hypotf(direction.x, direction.y);
+	if (distance > 0) {
+		enemyPosition += direction * m_acceleration * dt;
+	}
+	SetPosition(enemyPosition);
 }
 
 void CEnemy::Draw(sf::RenderWindow & window) const
@@ -32,4 +39,9 @@ sf::Vector2f CEnemy::GetPosition() const
 float CEnemy::GetRadius() const
 {
 	return m_body.getRadius();
+}
+
+void CEnemy::SetRadius(float newRadius)
+{
+	m_body.setRadius(newRadius);
 }

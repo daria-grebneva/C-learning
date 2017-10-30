@@ -1,8 +1,12 @@
 #include "stdafx.h"
 
+#include <iostream>
+using namespace std;
+
 #include "Agar.h"
 #include "sheet.h"
 #include "Utils.h"
+
 
 CAgar::CAgar()
 {
@@ -11,14 +15,18 @@ CAgar::CAgar()
 	m_body.setPosition(AGAR_INITIAL_POSITION);
 }
 
-void CAgar::Update(sf::Vector2i & pos, float dt)
+void CAgar::Update(const sf::Vector2i & pos, float dt)
 {
-	sf::Vector2f direction = sf::Vector2f(pos) - GetPosition();
-	float distance = sqrt(pow(direction.x, 2) + pow(direction.y, 2));
+	//dt = 0.000001;
+	sf::Vector2f agarPosition(pos);
+	sf::Vector2f direction = agarPosition - GetPosition();
+	
+	const auto distance = std::hypotf(direction.x, direction.y);
 	if (distance > 0) {
-		sf::Vector2f(pos) += direction * m_acceleration * dt;
+		agarPosition += direction * m_acceleration * dt;
+		//m_body.setPosition(agarPosition);
 	}
-	m_body.setPosition(sf::Vector2f(pos));
+	m_body.setPosition(agarPosition);
 }
 
 void CAgar::Draw(sf::RenderWindow & window)
@@ -34,4 +42,9 @@ sf::Vector2f CAgar::GetPosition() const
 float CAgar::GetRadius() const
 {
 	return m_body.getRadius();
+}
+
+void CAgar::SetRadius(float newRadius)
+{
+	m_body.setRadius(newRadius);
 }

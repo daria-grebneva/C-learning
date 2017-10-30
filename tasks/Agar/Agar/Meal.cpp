@@ -9,11 +9,6 @@ CMeal::CMeal()
 	m_body.setRadius(MEAL_RADIUS);
 }
 
-void CMeal::Update() const
-{
-
-}
-
 void CMeal::Draw(sf::RenderWindow & window) const
 {
 	window.draw(m_body);
