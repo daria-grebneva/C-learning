@@ -17,14 +17,14 @@ CAgar::CAgar()
 
 void CAgar::Update(const sf::Vector2i & pos, float dt)
 {
-	//dt = 0.000001;
 	sf::Vector2f agarPosition(pos);
-	sf::Vector2f direction = agarPosition - GetPosition();
+	sf::Vector2f vectorDirection = (agarPosition - GetPosition());
+	sf::Vector2f unitVectorDirection = vectorDirection / hypotf(vectorDirection.x, vectorDirection.y);
 	
-	const auto distance = std::hypotf(direction.x, direction.y);
-	if (distance > 0) {
-		agarPosition += direction * m_acceleration * dt;
-		//m_body.setPosition(agarPosition);
+	const auto distance = std::hypotf(vectorDirection.x, vectorDirection.y);
+	if (distance > 0) 
+	{
+		agarPosition += unitVectorDirection * m_acceleration * dt;
 	}
 	m_body.setPosition(agarPosition);
 }

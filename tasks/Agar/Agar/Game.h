@@ -35,7 +35,7 @@ private:
 	bool CanEat(const CAgar & player, const CMeal & meal);
 	bool CanEat(const CAgar & player, const CEnemy & enemy);
 	bool CanEat(const CEnemy & enemy, const CAgar & player);
-	//bool CanEat(const CEnemy & enemy, const CEnemy & enemy);
+	//TO DO :: 
 
 	void ProcessCollisions(CAgar & player);
 	void EnemiesMove(const CAgar & player, const CMeal & meal, float dt);

@@ -12,11 +12,13 @@ CEnemy::CEnemy()
 void CEnemy::Update(const sf::Vector2f & pos, float dt)
 {
 	sf::Vector2f enemyPosition(pos);
-	sf::Vector2f direction = enemyPosition - GetPosition();
+	sf::Vector2f direction = (enemyPosition - GetPosition());
+	sf::Vector2f unitVectorDirection = direction / hypotf(direction.x, direction.y);
 
-	const auto distance = std::hypotf(direction.x, direction.y);
-	if (distance > 0) {
-		enemyPosition += direction * m_acceleration * dt;
+	const auto distance = hypotf(direction.x, direction.y);
+	if (distance > 0) 
+	{
+		enemyPosition += unitVectorDirection * m_acceleration * dt;
 	}
 	SetPosition(enemyPosition);
 }

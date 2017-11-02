@@ -16,10 +16,10 @@ static const sf::Color WHITE = { 255, 255, 255 };
 static const float ENEMY_RADIUS = 25;
 static const sf::Vector2f ENEMY_SIZE = { ENEMY_RADIUS,  ENEMY_RADIUS };
 static const sf::Vector2f ENEMY_INITIAL_POSITION = { WINDOW_SIZE.x / 2.f, WINDOW_SIZE.y + AGAR_INITIAL_POSITION.y };
-static const unsigned NUMBER_ENEMIES = 2;  
+static const unsigned NUMBER_ENEMIES = 1;  
 
 static const float MEAL_RADIUS = 10;
 static const sf::Vector2f MEAL_SIZE = { MEAL_RADIUS,  MEAL_RADIUS };
 static const sf::Vector2f MEAL_INITIAL_POSITION = { WINDOW_SIZE.x / 2.f, WINDOW_SIZE.y + AGAR_INITIAL_POSITION.y };
-static const unsigned NUMBER_MEAL = 30; 
+static const unsigned NUMBER_MEAL = 10; 
 

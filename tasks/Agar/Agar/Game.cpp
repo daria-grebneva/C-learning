@@ -89,17 +89,17 @@ void CGame::Render()
 
 void CGame::EnemiesMove(const CAgar & player, const CMeal & meal, float dt) 
 {
-	for (auto & enemy : m_enemies) 
+	for (auto & enemyFirst : m_enemies) 
 	{
-		if (CheckRadiusVisibility(enemy, player, CONVERGENCE_RADIUS))
+		if (CheckRadiusVisibility(enemyFirst, player, CONVERGENCE_RADIUS))
 		{
-			enemy.Update(sf::Vector2f(player.GetPosition().x, player.GetPosition().y), dt);
+			enemyFirst.Update(sf::Vector2f(player.GetPosition().x, player.GetPosition().y), dt);
 		}
 		else 
 		{
-			for (auto & enemy : m_enemies) 
+			for (auto & enemySecond : m_enemies) 
 			{
-				enemy.Update(FindNearestDotCoordinate(enemy, meal), dt);
+				enemySecond.Update(FindNearestDotCoordinate(enemySecond, meal), dt);
 			}
 		}
 	}
@@ -107,19 +107,19 @@ void CGame::EnemiesMove(const CAgar & player, const CMeal & meal, float dt)
 
 void CGame::ProcessCollisions(CAgar & player) 
 {
-	for (auto & enemy : m_enemies) 
+	for (auto & enemyFirst : m_enemies) 
 	{
-		if (CanEat(enemy, player)) 
+		if (CanEat(enemyFirst, player))
 		{
 			//end of Game
 		}
-		else if (CanEat(player, enemy))
+		else if (CanEat(player, enemyFirst))
 		{
-			float newRadius = player.GetRadius() + sqrt(enemy.GetRadius());
+			float newRadius = player.GetRadius() + sqrt(enemyFirst.GetRadius());
 			player.SetRadius(newRadius);
-			enemy.SetPosition(GetRandomCoordinate());
+			enemyFirst.SetPosition(GetRandomCoordinate());
 		}
-		else for (auto & enemy : m_enemies) 
+		else for (auto & enemySecond : m_enemies) 
 		{
 			//change enemy coordinate
 		}
@@ -171,50 +171,26 @@ bool CGame::CanEat(const CEnemy & enemy, const CAgar & player)
 
 bool CGame::CheckCollision(const CEnemy & enemy, const CAgar & player)
 {
-	if ((((enemy.GetPosition().x - enemy.GetRadius() / 2 - player.GetRadius() / 2) < player.GetPosition().x)
-		&& (player.GetPosition().x < (enemy.GetPosition().x + enemy.GetRadius() / 2 + player.GetRadius() / 2)))
-		&& (((enemy.GetPosition().y - enemy.GetRadius() - player.GetRadius()) < player.GetPosition().y)
-			&& (player.GetPosition().y < (enemy.GetPosition().y + enemy.GetRadius() + player.GetRadius()))))
-	{
-		return true;
-	}
-	else return false;
+	return (((abs(enemy.GetPosition().x + enemy.GetRadius() - player.GetRadius() - player.GetPosition().x)) < player.GetRadius() + enemy.GetRadius())
+		&& ((abs(enemy.GetPosition().y + enemy.GetRadius() - player.GetRadius() - player.GetPosition().y)) < player.GetRadius() + enemy.GetRadius()));
 }
 
 bool CGame::CheckCollision(const CAgar & player, const CEnemy & enemy)
 {
-	if ((((player.GetPosition().x - player.GetRadius() / 2 - enemy.GetRadius() / 2) < enemy.GetPosition().x)
-		&& (enemy.GetPosition().x < (player.GetPosition().x + player.GetRadius() / 2 + enemy.GetRadius() / 2)))
-		&& (((player.GetPosition().y - player.GetRadius() - enemy.GetRadius()) < enemy.GetPosition().y)
-			&& (enemy.GetPosition().y < (player.GetPosition().y + player.GetRadius() + enemy.GetRadius()))))
-	{
-		return true;
-	}
-	else return false;
+	return (((abs(player.GetPosition().x + player.GetRadius() - enemy.GetRadius() - enemy.GetPosition().x)) < enemy.GetRadius() + player.GetRadius())
+		&& ((abs(player.GetPosition().y + player.GetRadius() - enemy.GetRadius() - enemy.GetPosition().y)) < enemy.GetRadius() + player.GetRadius()));
 }
 
 bool CGame::CheckCollision(const CAgar & player, const CMeal & meal)
 {
-	if ((((player.GetPosition().x - player.GetRadius() / 2 - meal.GetRadius() / 2) < meal.GetPosition().x)
-		&& (meal.GetPosition().x < (player.GetPosition().x + player.GetRadius() / 2 + meal.GetRadius() / 2)))
-		&& (((player.GetPosition().y - player.GetRadius() - meal.GetRadius()) < meal.GetPosition().y)
-			&& (meal.GetPosition().y < (player.GetPosition().y + player.GetRadius() + meal.GetRadius()))))
-	{
-		return true;
-	}
-	else return false;
+	return (((abs(player.GetPosition().x + player.GetRadius() - meal.GetRadius() - meal.GetPosition().x)) < meal.GetRadius() + player.GetRadius())
+		&& ((abs(player.GetPosition().y + player.GetRadius() - meal.GetRadius() - meal.GetPosition().y)) < meal.GetRadius() + player.GetRadius()));
 }
 
 bool CGame::CheckCollision(const CEnemy & enemy, const CMeal & meal) 
 {
-	if ((((enemy.GetPosition().x - enemy.GetRadius() / 2 - meal.GetRadius() / 2) < meal.GetPosition().x)
-		&& (meal.GetPosition().x < (enemy.GetPosition().x + enemy.GetRadius() / 2 + meal.GetRadius() / 2)))
-		&& (((enemy.GetPosition().y - enemy.GetRadius() - meal.GetRadius()) < meal.GetPosition().y)
-			&& (meal.GetPosition().y < (enemy.GetPosition().y + enemy.GetRadius() + meal.GetRadius())))) 
-	{
-		return true;
-	}
-	else return false;
+	return (((abs(enemy.GetPosition().x + enemy.GetRadius() - meal.GetRadius() - meal.GetPosition().x)) < meal.GetRadius() + enemy.GetRadius())
+		&& ((abs(enemy.GetPosition().y + enemy.GetRadius() - meal.GetRadius() - meal.GetPosition().y)) < meal.GetRadius() + enemy.GetRadius()));
 }
 
 sf::Vector2f CGame::FindNearestDotCoordinate(const CEnemy & enemy, const CMeal & meal)

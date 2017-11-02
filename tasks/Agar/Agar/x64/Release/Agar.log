@@ -1,22 +1,4 @@
-﻿  Game.cpp
-e:\c-learning\tasks\agar\agar\Agar.h(17): warning C4305: 'initializing': truncation from 'double' to 'float'
-e:\c-learning\tasks\agar\agar\Enemies.h(20): warning C4305: 'initializing': truncation from 'double' to 'float'
-Game.cpp(66): warning C4189: 'meal': local variable is initialized but not referenced
-Game.cpp(100): warning C4456: declaration of 'enemy' hides previous local declaration
-  Game.cpp(92): note: see declaration of 'enemy'
-Game.cpp(122): warning C4456: declaration of 'enemy' hides previous local declaration
-  Game.cpp(110): note: see declaration of 'enemy'
-Game.cpp(122): warning C4189: 'enemy': local variable is initialized but not referenced
-     Creating library E:\C-learning\tasks\Agar\x64\Release\Agar.lib and object E:\C-learning\tasks\Agar\x64\Release\Agar.exp
-LIBCMT.lib(initializers.obj) : warning LNK4098: defaultlib 'msvcrt.lib' conflicts with use of other libs; use /NODEFAULTLIB:library
-  Generating code
-  73 of 180 functions (40.6%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    5 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-sfml-main.lib(MainWin32.cpp.obj) : warning LNK4049: locally defined symbol __p___argc imported
-sfml-main.lib(MainWin32.cpp.obj) : warning LNK4049: locally defined symbol __p___argv imported
-  Agar.vcxproj -> E:\C-learning\tasks\Agar\x64\Release\Agar.exe
+﻿  Agar.vcxproj -> E:\C-learning\tasks\Agar\x64\Release\Agar.exe
   Agar.vcxproj -> E:\C-learning\tasks\Agar\x64\Release\Agar.pdb (Full PDB)
   E:\SFML-2.4.2\bin\Release\sfml-audio-2.dll
   E:\SFML-2.4.2\bin\Release\sfml-graphics-2.dll
