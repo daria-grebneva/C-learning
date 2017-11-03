@@ -1,10 +1,15 @@
-﻿  stdafx.cpp
-  Agar.cpp
-  Enemies.cpp
-  Game.cpp
-  main.cpp
-  Meal.cpp
-  Utils.cpp
-Game.cpp(66): warning C4189: 'meal': local variable is initialized but not referenced
-Game.cpp(122): warning C4189: 'enemySecond': local variable is initialized but not referenced
-sfml-graphics.lib(sfml-graphics-2.dll) : fatal error LNK1112: module machine type 'x64' conflicts with target machine type 'x86'
+﻿     Creating library E:\C-learning\tasks\Agar\Release\Agar.lib and object E:\C-learning\tasks\Agar\Release\Agar.exp
+LIBCMT.lib(initializers.obj) : warning LNK4098: defaultlib 'msvcrt.lib' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Generating code
+  All 201 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+sfml-main.lib(MainWin32.cpp.obj) : warning LNK4049: locally defined symbol ___p___argc imported
+sfml-main.lib(MainWin32.cpp.obj) : warning LNK4049: locally defined symbol ___p___argv imported
+  Agar.vcxproj -> E:\C-learning\tasks\Agar\Release\Agar.exe
+  Agar.vcxproj -> E:\C-learning\tasks\Agar\Release\Agar.pdb (Full PDB)
+  E:\SFML\bin\x86\Release\sfml-audio-2.dll
+  E:\SFML\bin\x86\Release\sfml-graphics-2.dll
+  E:\SFML\bin\x86\Release\sfml-network-2.dll
+  E:\SFML\bin\x86\Release\sfml-system-2.dll
+  E:\SFML\bin\x86\Release\sfml-window-2.dll
+  Скопировано файлов: 5.

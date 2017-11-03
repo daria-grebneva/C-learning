@@ -64,7 +64,7 @@ void CGame::Update(float dt)
 	m_hero.Update(m_mousePosition, dt);
 	EnemiesMove(m_hero, dt);
 	ProcessCollisions(m_hero);
-	m_view.setCenter(m_hero.GetPosition());
+	m_view.setCenter(m_hero.GetPosition() + m_hero.GetRadius() * sf::Vector2f(1, 1));
 }
 
 void CGame::Render()
