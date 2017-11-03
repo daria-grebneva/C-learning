@@ -14,6 +14,6 @@ public:
 	void SetRadius(float newRadius);
 
 private:
-	float m_acceleration = 0.0001f;
+	float m_acceleration = 400.f;
 	sf::CircleShape m_body;
 };

@@ -1,0 +1,10 @@
+﻿  stdafx.cpp
+  Agar.cpp
+  Enemies.cpp
+  Game.cpp
+  main.cpp
+  Meal.cpp
+  Utils.cpp
+Game.cpp(66): warning C4189: 'meal': local variable is initialized but not referenced
+Game.cpp(122): warning C4189: 'enemySecond': local variable is initialized but not referenced
+sfml-graphics.lib(sfml-graphics-2.dll) : fatal error LNK1112: module machine type 'x64' conflicts with target machine type 'x86'

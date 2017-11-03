@@ -17,5 +17,5 @@ public:
 
 private:
 	sf::CircleShape m_body;
-	float m_acceleration = 0.0001f;
+	float m_acceleration = 10.f;
 }; 

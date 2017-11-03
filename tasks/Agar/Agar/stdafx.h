@@ -1,6 +1,7 @@
 #pragma once
 
 #include "targetver.h"
+#include <Windows.h>
 
 #pragma warning (push, 3)
 
@@ -8,8 +9,7 @@
 
 #pragma warning (pop)
 
-#include <stdio.h>
-#include <tchar.h>
 #include <iostream>
 #include <cmath>
 #include <array>
+#include <limits>

@@ -7,7 +7,6 @@ using namespace std;
 #include "sheet.h"
 #include "Utils.h"
 
-
 CAgar::CAgar()
 {
 	m_body.setFillColor(GetRandomColor());
@@ -17,16 +16,19 @@ CAgar::CAgar()
 
 void CAgar::Update(const sf::Vector2i & pos, float dt)
 {
-	sf::Vector2f agarPosition(pos);
-	sf::Vector2f vectorDirection = (agarPosition - GetPosition());
-	sf::Vector2f unitVectorDirection = vectorDirection / hypotf(vectorDirection.x, vectorDirection.y);
-	
-	const auto distance = std::hypotf(vectorDirection.x, vectorDirection.y);
-	if (distance > 0) 
+	sf::Vector2f fieldSize(WINDOW_SIZE);
+	sf::Vector2f mousePos = GetPosition() - 0.5f * fieldSize + sf::Vector2f(pos);
+	sf::Vector2f path = mousePos - GetPosition() - sf::Vector2f(GetRadius(), GetRadius());
+	if (hypotf(path.x, path.y) > numeric_limits<float>::epsilon())
 	{
-		agarPosition += unitVectorDirection * m_acceleration * dt;
+		const auto distance = hypotf(path.x, path.y);
+		sf::Vector2f direction = path / distance;
+		if (distance > 5.f)
+		{
+			sf::Vector2f agarPosition = GetPosition() + direction * m_acceleration * dt;
+			m_body.setPosition(agarPosition);
+		}
 	}
-	m_body.setPosition(agarPosition);
 }
 
 void CAgar::Draw(sf::RenderWindow & window)
