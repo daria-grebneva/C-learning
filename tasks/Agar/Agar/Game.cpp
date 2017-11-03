@@ -24,14 +24,6 @@ CGame::CGame()
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 }
 
-void CGame::DrawRectangle()
-{
-	rectangle.setSize(sf::Vector2f(WINDOW_SIZE));
-	rectangle.setFillColor(sf::Color{200, 188, 200});
-	rectangle.setPosition(0, 0);
-	m_window.draw(rectangle);
-}
-
 void CGame::DoGameLoop()
 {
 	while (m_window.isOpen())
@@ -70,10 +62,7 @@ void CGame::CheckMouseEvents(const sf::Event & event)
 void CGame::Update(float dt)
 {
 	m_hero.Update(m_mousePosition, dt);
-	for (auto & meal : m_meal)
-	{
-		EnemiesMove(m_hero, meal, dt);
-	}
+	EnemiesMove(m_hero, dt);
 	ProcessCollisions(m_hero);
 	m_view.setCenter(m_hero.GetPosition());
 }
@@ -81,7 +70,6 @@ void CGame::Update(float dt)
 void CGame::Render()
 {
 	m_window.clear(PURPLE);
-	DrawRectangle();
 	for (const auto & meal : m_meal)
 	{
 		meal.Draw(m_window);
@@ -93,7 +81,7 @@ void CGame::Render()
 	m_hero.Draw(m_window);
 }
 
-void CGame::EnemiesMove(const CAgar & player, const CMeal & meal, float dt) 
+void CGame::EnemiesMove(const CAgar & player, float dt) 
 {
 	for (auto & enemyFirst : m_enemies) 
 	{
@@ -103,7 +91,7 @@ void CGame::EnemiesMove(const CAgar & player, const CMeal & meal, float dt)
 		}
 		else 
 		{
-			enemyFirst.Update(FindNearestDotCoordinate(enemyFirst, meal), dt);
+			enemyFirst.Update(FindNearestDotCoordinate(enemyFirst), dt);
 		}
 	}
 }
@@ -238,7 +226,7 @@ bool CGame::CheckCollision(const CEnemy & enemyFirst, const CEnemy & enemySecond
 		&& ((abs(enemyFirst.GetPosition().y + enemyFirst.GetRadius() - enemySecond.GetRadius() - enemySecond.GetPosition().y)) < enemySecond.GetRadius() + enemyFirst.GetRadius()));
 }
 
-sf::Vector2f CGame::FindNearestDotCoordinate(const CEnemy & enemy, const CMeal & meal)
+sf::Vector2f CGame::FindNearestDotCoordinate(const CEnemy & enemy)
 {
 	sf::Vector2f distanceDot = { 0, 0 };
 	sf::Vector2f nearestMeal = { 1400, 800 };

@@ -23,7 +23,7 @@ private:
 	bool CheckPositionUp(const CEnemy & enemy, const CAgar & player, const int radius) const;
 	bool CheckPositionDown(const CEnemy & enemy, const CAgar & player, const int radius) const;
 	bool CheckRadiusVisibility(const CEnemy & enemy, const CAgar & player, const int radius) const;
-	sf::Vector2f FindNearestDotCoordinate(const CEnemy & enemy, const CMeal & meal);
+	sf::Vector2f FindNearestDotCoordinate(const CEnemy & enemy);
 	
 	bool CheckCollision(const CEnemy & enemy, const CMeal & meal);
 	bool CheckCollision(const CAgar & player, const CMeal & meal);
@@ -38,8 +38,7 @@ private:
 	bool CanEat(const CEnemy & enemySecond, const CEnemy & enemyFirst);
 
 	void ProcessCollisions(CAgar & player);
-	void EnemiesMove(const CAgar & player, const CMeal & meal, float dt);
-	void DrawRectangle();
+	void EnemiesMove(const CAgar & player, float dt);
 
 	sf::RenderWindow m_window;
 	sf::Vector2i m_mousePosition;
@@ -48,5 +47,4 @@ private:
 	std::array<CMeal, NUMBER_MEAL> m_meal;
 	sf::View m_view;
 	sf::Clock m_clock;
-	sf::RectangleShape rectangle;
 };

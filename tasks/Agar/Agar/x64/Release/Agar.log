@@ -1,4 +1,18 @@
-﻿  Agar.vcxproj -> E:\C-learning\tasks\Agar\x64\Release\Agar.exe
+﻿  stdafx.cpp
+  Agar.cpp
+  Enemies.cpp
+  Game.cpp
+  main.cpp
+  Meal.cpp
+  Utils.cpp
+     Creating library E:\C-learning\tasks\Agar\x64\Release\Agar.lib and object E:\C-learning\tasks\Agar\x64\Release\Agar.exp
+LIBCMT.lib(initializers.obj) : warning LNK4098: defaultlib 'msvcrt.lib' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Generating code
+  All 199 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+sfml-main.lib(MainWin32.cpp.obj) : warning LNK4049: locally defined symbol __p___argc imported
+sfml-main.lib(MainWin32.cpp.obj) : warning LNK4049: locally defined symbol __p___argv imported
+  Agar.vcxproj -> E:\C-learning\tasks\Agar\x64\Release\Agar.exe
   Agar.vcxproj -> E:\C-learning\tasks\Agar\x64\Release\Agar.pdb (Full PDB)
   E:\SFML-2.4.2\bin\Release\sfml-audio-2.dll
   E:\SFML-2.4.2\bin\Release\sfml-graphics-2.dll
