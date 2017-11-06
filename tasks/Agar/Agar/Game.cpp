@@ -7,8 +7,12 @@
 using namespace std;
 
 CGame::CGame()
-	:m_window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), WINDOW_TITLE, WINDOW_STYLE)
 {
+	const sf::VideoMode videoMode(WINDOW_SIZE.x, WINDOW_SIZE.y);
+	sf::ContextSettings contextSettings;
+	contextSettings.antialiasingLevel = 8;
+	m_window.create(videoMode, WINDOW_TITLE, WINDOW_STYLE, contextSettings);
+
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(WINDOW_FRAME_LIMIT);
 
@@ -112,7 +116,9 @@ void CGame::ProcessCollisions(CAgar & player)
 		}
 		else if (CanEat(player, enemyFirst))
 		{
+			float oldRadius = player.GetRadius();
 			float newRadius = increaseRadius(player.GetRadius(), enemyFirst.GetRadius());
+			player.SetPosition(player.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
 			if (newRadius < LIMIT_RADIUS)
 			{
 				player.SetRadius(newRadius);
@@ -124,7 +130,9 @@ void CGame::ProcessCollisions(CAgar & player)
 		{
 			if (CanEat(enemyFirst, enemySecond))
 			{
+				float oldRadius = enemyFirst.GetRadius();
 				float newRadius = increaseRadius(enemyFirst.GetRadius(), enemySecond.GetRadius());
+				enemyFirst.SetPosition(enemyFirst.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
 				if (newRadius < LIMIT_RADIUS)
 				{
 					enemyFirst.SetRadius(newRadius);
@@ -134,7 +142,9 @@ void CGame::ProcessCollisions(CAgar & player)
 			}
 			else if (CanEat(enemySecond, enemyFirst))
 			{
+				float oldRadius = enemySecond.GetRadius();
 				float newRadius = increaseRadius(enemySecond.GetRadius(), enemyFirst.GetRadius());
+				enemySecond.SetPosition(enemySecond.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
 				if (newRadius < LIMIT_RADIUS)
 				{
 					enemySecond.SetRadius(newRadius);
@@ -151,7 +161,9 @@ void CGame::ProcessCollisions(CAgar & player)
 		{
 			if (CanEat(player, meal))
 			{
+				float oldRadius = player.GetRadius();
 				float newRadius = increaseRadius(player.GetRadius(), meal.GetRadius());
+				player.SetPosition(player.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
 				if (newRadius < LIMIT_RADIUS)
 				{
 					player.SetRadius(newRadius);
@@ -160,7 +172,9 @@ void CGame::ProcessCollisions(CAgar & player)
 			}
 			else if (CanEat(enemy, meal))
 			{
+				float oldRadius = enemy.GetRadius();
 				float newRadius = increaseRadius(enemy.GetRadius(), meal.GetRadius());
+				enemy.SetPosition(enemy.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
 				if (newRadius < LIMIT_RADIUS)
 				{
 					enemy.SetRadius(newRadius);

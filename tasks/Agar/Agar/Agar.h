@@ -12,6 +12,7 @@ public:
 	sf::Vector2f GetPosition() const;
 	float GetRadius() const;
 	void SetRadius(float newRadius);
+	void SetPosition(const sf::Vector2f & pos);
 
 private:
 	float m_acceleration = 400.f;

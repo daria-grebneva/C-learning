@@ -49,4 +49,10 @@ float CAgar::GetRadius() const
 void CAgar::SetRadius(float newRadius)
 {
 	m_body.setRadius(newRadius);
+	m_body.setPointCount(static_cast<int>(newRadius * float(2 * M_PI)));
+}
+
+void CAgar::SetPosition(const sf::Vector2f & pos)
+{
+	m_body.setPosition(pos);
 }
