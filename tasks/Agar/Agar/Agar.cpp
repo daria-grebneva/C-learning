@@ -23,9 +23,9 @@ void CAgar::Update(const sf::Vector2i & pos, float dt)
 	{
 		const auto distance = hypotf(path.x, path.y);
 		sf::Vector2f direction = path / distance;
-		if (distance > 5.f)
+		if (distance > DISTANCE_TO_MOVE)
 		{
-			sf::Vector2f agarPosition = GetPosition() + direction * m_acceleration * dt;
+			sf::Vector2f agarPosition = GetPosition() + direction * m_velocity * dt;
 			m_body.setPosition(agarPosition);
 		}
 	}

@@ -8,13 +8,16 @@ using namespace std;
 
 CGame::CGame()
 {
+	
 	const sf::VideoMode videoMode(WINDOW_SIZE.x, WINDOW_SIZE.y);
 	sf::ContextSettings contextSettings;
 	contextSettings.antialiasingLevel = 8;
 	m_window.create(videoMode, WINDOW_TITLE, WINDOW_STYLE, contextSettings);
-
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(WINDOW_FRAME_LIMIT);
+
+	const auto icon = m_assets.WINDOW_ICON;
+	m_window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
 	for (auto & enemy : m_enemies)
 	{
@@ -100,11 +103,6 @@ void CGame::EnemiesMove(const CAgar & player, float dt)
 	}
 }
 
-float increaseRadius(float firstRadius, float secondRadius)
-{
-	return sqrt(pow(firstRadius, 2) + pow(secondRadius, 2));
-}
-
 void CGame::ProcessCollisions(CAgar & player) 
 {
 	for (auto & enemyFirst : m_enemies) 
@@ -117,10 +115,10 @@ void CGame::ProcessCollisions(CAgar & player)
 		else if (CanEat(player, enemyFirst))
 		{
 			float oldRadius = player.GetRadius();
-			float newRadius = increaseRadius(player.GetRadius(), enemyFirst.GetRadius());
-			player.SetPosition(player.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
+			float newRadius = std::hypotf(player.GetRadius(), enemyFirst.GetRadius());
 			if (newRadius < LIMIT_RADIUS)
 			{
+				player.SetPosition(player.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
 				player.SetRadius(newRadius);
 			}
 			enemyFirst.SetRadius(ENEMY_RADIUS);
@@ -131,10 +129,10 @@ void CGame::ProcessCollisions(CAgar & player)
 			if (CanEat(enemyFirst, enemySecond))
 			{
 				float oldRadius = enemyFirst.GetRadius();
-				float newRadius = increaseRadius(enemyFirst.GetRadius(), enemySecond.GetRadius());
-				enemyFirst.SetPosition(enemyFirst.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
+				float newRadius = std::hypotf(enemyFirst.GetRadius(), enemySecond.GetRadius());
 				if (newRadius < LIMIT_RADIUS)
 				{
+					enemyFirst.SetPosition(enemyFirst.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
 					enemyFirst.SetRadius(newRadius);
 				}
 				enemySecond.SetRadius(ENEMY_RADIUS);
@@ -143,10 +141,10 @@ void CGame::ProcessCollisions(CAgar & player)
 			else if (CanEat(enemySecond, enemyFirst))
 			{
 				float oldRadius = enemySecond.GetRadius();
-				float newRadius = increaseRadius(enemySecond.GetRadius(), enemyFirst.GetRadius());
-				enemySecond.SetPosition(enemySecond.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
+				float newRadius = std::hypotf(enemySecond.GetRadius(), enemyFirst.GetRadius());
 				if (newRadius < LIMIT_RADIUS)
 				{
+					enemySecond.SetPosition(enemySecond.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
 					enemySecond.SetRadius(newRadius);
 				}
 				enemyFirst.SetRadius(ENEMY_RADIUS);
@@ -162,10 +160,10 @@ void CGame::ProcessCollisions(CAgar & player)
 			if (CanEat(player, meal))
 			{
 				float oldRadius = player.GetRadius();
-				float newRadius = increaseRadius(player.GetRadius(), meal.GetRadius());
-				player.SetPosition(player.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
+				float newRadius = std::hypotf(player.GetRadius(), meal.GetRadius());
 				if (newRadius < LIMIT_RADIUS)
 				{
+					player.SetPosition(player.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
 					player.SetRadius(newRadius);
 				}
 				meal.SetPosition(GetRandomCoordinate());
@@ -173,10 +171,10 @@ void CGame::ProcessCollisions(CAgar & player)
 			else if (CanEat(enemy, meal))
 			{
 				float oldRadius = enemy.GetRadius();
-				float newRadius = increaseRadius(enemy.GetRadius(), meal.GetRadius());
-				enemy.SetPosition(enemy.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
+				float newRadius = std::hypotf(enemy.GetRadius(), meal.GetRadius());
 				if (newRadius < LIMIT_RADIUS)
 				{
+					enemy.SetPosition(enemy.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
 					enemy.SetRadius(newRadius);
 				}
 				meal.SetPosition(GetRandomCoordinate());
@@ -243,7 +241,7 @@ bool CGame::CheckCollision(const CEnemy & enemyFirst, const CEnemy & enemySecond
 sf::Vector2f CGame::FindNearestDotCoordinate(const CEnemy & enemy)
 {
 	sf::Vector2f distanceDot = { 0, 0 };
-	sf::Vector2f nearestMeal = { 1400, 800 };
+	sf::Vector2f nearestMeal = sf::Vector2f(FIELD_SIZE);
 	for (auto & meal : m_meal)
 	{
 		distanceDot = (enemy.GetPosition() - meal.GetPosition());

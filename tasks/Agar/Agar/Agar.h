@@ -15,6 +15,6 @@ public:
 	void SetPosition(const sf::Vector2f & pos);
 
 private:
-	float m_acceleration = 400.f;
+	float m_velocity = START_AGAR_VELOCITY;
 	sf::CircleShape m_body;
 };

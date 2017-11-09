@@ -191,6 +191,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Agar.h" />
+    <ClInclude Include="Assets.h" />
     <ClInclude Include="Enemies.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Meal.h" />
@@ -201,6 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Agar.cpp" />
+    <ClCompile Include="Assets.cpp" />
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />

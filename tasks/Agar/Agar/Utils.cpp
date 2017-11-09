@@ -14,8 +14,9 @@ sf::Color GetRandomColor()
 		sf::Uint8(B)
 	};
 }
+
 sf::Vector2f GetRandomCoordinate()
 {
-	sf::Vector2i randomCoord = {rand() % (FIELD_SIZE.x), rand() % (FIELD_SIZE.y) };
+	sf::Vector2i randomCoord = { rand() % (FIELD_SIZE.x), rand() % (FIELD_SIZE.y) };
 	return sf::Vector2f(randomCoord);
 }

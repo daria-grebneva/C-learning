@@ -17,5 +17,5 @@ public:
 
 private:
 	sf::CircleShape m_body;
-	float m_acceleration = 50.f;
+	float m_velocity = START_ENEMY_VELOCITY;
 }; 

@@ -18,9 +18,9 @@ void CEnemy::Update(const sf::Vector2f & pos, float dt)
 	{
 		const auto distance = std::hypotf(path.x, path.y);
 		sf::Vector2f unitVectorDirection = path / distance;
-		if (distance > 5.f)
+		if (distance > DISTANCE_TO_MOVE)
 		{
-			enemyPosition = GetPosition() + unitVectorDirection * m_acceleration * dt;
+			enemyPosition = GetPosition() + unitVectorDirection * m_velocity * dt;
 			m_body.setPosition(enemyPosition);
 		}
 	}
