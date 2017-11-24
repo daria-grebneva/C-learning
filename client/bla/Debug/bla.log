@@ -1,0 +1,25 @@
+﻿  Agar.cpp
+  Application.cpp
+  Assets.cpp
+  main.cpp
+  Enemies.cpp
+  Meal.cpp
+  stdafx.cpp
+e:\c-learning\client\bla\application.cpp(62): warning C4239: nonstandard extension used: 'argument': conversion from 'sf::Color' to 'sf::Color &'
+  e:\c-learning\client\bla\application.cpp(62): note: A non-const reference may only be bound to an lvalue
+e:\c-learning\client\bla\application.cpp(71): warning C4239: nonstandard extension used: 'argument': conversion from 'sf::Color' to 'sf::Color &'
+  e:\c-learning\client\bla\application.cpp(71): note: A non-const reference may only be bound to an lvalue
+e:\c-learning\client\bla\application.cpp(79): warning C4239: nonstandard extension used: 'argument': conversion from 'sf::Color' to 'sf::Color &'
+  e:\c-learning\client\bla\application.cpp(79): note: A non-const reference may only be bound to an lvalue
+socketio.lib(sio_client_impl.obj) : warning LNK4099: PDB 'bla.pdb' was not found with 'socketio.lib(sio_client_impl.obj)' or at 'E:\C-learning\client\Debug\bla.pdb'; linking object as if no debug info
+socketio.lib(sio_packet.obj) : warning LNK4099: PDB 'bla.pdb' was not found with 'socketio.lib(sio_packet.obj)' or at 'E:\C-learning\client\Debug\bla.pdb'; linking object as if no debug info
+socketio.lib(sio_client.obj) : warning LNK4099: PDB 'bla.pdb' was not found with 'socketio.lib(sio_client.obj)' or at 'E:\C-learning\client\Debug\bla.pdb'; linking object as if no debug info
+socketio.lib(sio_socket.obj) : warning LNK4099: PDB 'bla.pdb' was not found with 'socketio.lib(sio_socket.obj)' or at 'E:\C-learning\client\Debug\bla.pdb'; linking object as if no debug info
+  bla.vcxproj -> E:\C-learning\client\Debug\AgarMultiplayer.exe
+  bla.vcxproj -> E:\C-learning\client\Debug\AgarMultiplayer.pdb (Partial PDB)
+  E:\sdk\SFML\bin\x86\Debug\sfml-audio-d-2.dll
+  E:\sdk\SFML\bin\x86\Debug\sfml-graphics-d-2.dll
+  E:\sdk\SFML\bin\x86\Debug\sfml-network-d-2.dll
+  E:\sdk\SFML\bin\x86\Debug\sfml-system-d-2.dll
+  E:\sdk\SFML\bin\x86\Debug\sfml-window-d-2.dll
+  Скопировано файлов: 5.

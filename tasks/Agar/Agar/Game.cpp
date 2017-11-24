@@ -119,7 +119,7 @@ void CGame::ProcessCollisions(CAgar & player)
 			if (newRadius < LIMIT_RADIUS)
 			{
 				player.SetPosition(player.GetPosition() + sf::Vector2f(oldRadius - newRadius, oldRadius - newRadius));
-				player.SetRadius(newRadius);
+				player.SetRadius(newRadius );
 			}
 			enemyFirst.SetRadius(ENEMY_RADIUS);
 			enemyFirst.SetPosition(GetRandomCoordinate());
