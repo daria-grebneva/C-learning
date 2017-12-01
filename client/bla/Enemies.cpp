@@ -11,7 +11,7 @@ void CEnemy::Draw(sf::RenderWindow & window) const
 	window.draw(m_body);
 }
 
-void CEnemy::SetColor(sf::Color & color)
+void CEnemy::SetColor(const sf::Color & color)
 {
 	m_body.setFillColor(color);
 }

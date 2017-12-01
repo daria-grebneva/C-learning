@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
-#include "Application.h"
+#include "GameScene.h"
 
 int main()
 {
-	Application app;
+	GameScene app;
 	app.DoGameLoop();
 }

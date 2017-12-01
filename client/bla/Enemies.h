@@ -8,7 +8,7 @@ public:
 	CEnemy();
 
 	void Draw(sf::RenderWindow & window) const;
-	void SetColor(sf::Color & color);
+	void SetColor(const sf::Color & color);
 	void SetPosition(const sf::Vector2f & pos);
 	sf::Vector2f GetPosition() const;
 	float GetRadius() const;

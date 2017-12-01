@@ -6,6 +6,9 @@ static const float FIELD_COEF = 3500;
 static const std::string WINDOW_TITLE = "AGARIO";
 static const auto WINDOW_STYLE = sf::Style::Close;
 static const unsigned WINDOW_FRAME_LIMIT = 60;
+static const std::string ICON_IMAGE_PATH = "res/images/icon.png";
+static const std::string BACKGROUND_PATH = "res/images/screen_saver.png";
+static unsigned ANTIALIASING_LEVEL = 8; 
 
 static const sf::Color PURPLE = { 245, 235, 245 };
 

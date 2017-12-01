@@ -11,7 +11,7 @@ public:
 	void SetPosition(const sf::Vector2f & pos);
 	sf::Vector2f GetPosition() const;
 	float GetRadius() const;
-	void SetColor(sf::Color & color);
+	void SetColor(const sf::Color & color);
 	void SetRadius(float newRadius);
 
 private:

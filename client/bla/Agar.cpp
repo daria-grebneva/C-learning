@@ -3,10 +3,6 @@
 #include "Agar.h"
 #include "sheet.h"
 
-CAgar::CAgar()
-{
-}
-
 void CAgar::Draw(sf::RenderWindow & window)
 {
 	window.draw(m_body);
@@ -33,7 +29,7 @@ void CAgar::SetPosition(const sf::Vector2f & pos)
 	m_body.setPosition(pos);
 }
 
-void CAgar::SetColor(sf::Color & color)
+void CAgar::SetColor(const sf::Color & color)
 {
 	m_body.setFillColor(color);
 }

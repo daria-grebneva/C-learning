@@ -26,7 +26,7 @@ float CMeal::GetRadius() const
 	return m_body.getRadius();
 }
 
-void CMeal::SetColor(sf::Color & color)
+void CMeal::SetColor(const sf::Color & color)
 {
 	m_body.setFillColor(color);
 }
