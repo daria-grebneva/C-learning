@@ -24,9 +24,10 @@ sf::Color takeJsonColor(nlohmann::basic_json <> colorObj)
 	}; 
 }
 
-GameScene::GameScene()
+ÑGameScene::ÑGameScene(sf::RenderWindow & window, CAssets & assets)
 	:m_socketMaster(PORT)
 	,m_audioPlayer("res/sounds/")
+	,m_window(window)
 {
 	m_socketMaster.Emit(KEY_NEW_PLAYER);
 	m_socketMaster.SetHandler("player_created", [&](sio::event & m)
@@ -49,12 +50,59 @@ GameScene::GameScene()
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 }
 
-std::string GameScene::GetId(const std::string & path)
+std::string ÑGameScene::GetId(const std::string & path)
 {
 	return json::parse(path)["id_player"];
 }
 
-void GameScene::ProcessUpdateData(const std::string & path)
+SceneInfo ÑGameScene::Advance(float dt)
+{
+	m_nextSceneType = SceneType::ÑGameScene;
+	CheckEvents();
+	Update(dt);
+	Render();
+	m_window.display();
+
+	return SceneInfo(m_nextSceneType);
+}
+
+void ÑGameScene::CheckEvents()
+{
+	sf::Event event;
+	while (m_window.pollEvent(event))
+	{
+		CheckKeyboardEvents(event);
+		m_mousePosition = CheckMouseEvents(event);
+
+		if (event.type == sf::Event::Closed)
+		{
+			m_window.close();
+		}
+	}
+}
+
+void ÑGameScene::CheckKeyboardEvents(const sf::Event & event)
+{
+	bool isNeedUpdate = false;
+	CheckKeyPressed(event, isNeedUpdate);
+}
+
+void ÑGameScene::CheckKeyPressed(const sf::Event & event, bool & isNeedUpdate)
+{
+	if (event.type == sf::Event::KeyPressed)
+	{
+		switch (event.key.code)
+		{
+		case sf::Keyboard::Space:
+			m_nextSceneType = SceneType::PauseScene;
+		case sf::Keyboard::Tab:
+		default:
+			break;
+		}
+	}
+}
+
+void ÑGameScene::ProcessUpdateData(const std::string & path)
 {
 	const auto data = json::parse(path);
 	const auto foodStringLength = data[KEY_FOOD].size();
@@ -108,44 +156,7 @@ void GameScene::ProcessUpdateData(const std::string & path)
 	}
 }
 
-void GameScene::DoGameLoop()
-{
-	while (m_window.isOpen())
-	{
-		if (m_socketMaster.IsConnected())
-		{
-			CheckEvents();
-			Update();
-			Render();
-			m_window.display();
-		}
-		else 
-		{
-			CheckEvents();
-			m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
-			m_background.setTexture(m_assets.BACKGROUND);
-			m_window.draw(m_background);
-			m_window.setView(m_view);
-			m_window.display();
-		}
-	}
-}
-
-void GameScene::CheckEvents()
-{
-	sf::Event event;
-	while (m_window.pollEvent(event))
-	{
-		m_mousePosition = CheckMouseEvents(event);
-
-		if (event.type == sf::Event::Closed)
-		{
-			m_window.close();
-		}
-	}
-}
-
-sf::Vector2i GameScene::CheckMouseEvents(const sf::Event & event)
+sf::Vector2i ÑGameScene::CheckMouseEvents(const sf::Event & event)
 {
 	sf::Vector2i mousePosition = { 0,  0 };
 	if (event.type == sf::Event::MouseMoved)
@@ -159,7 +170,7 @@ sf::Vector2i GameScene::CheckMouseEvents(const sf::Event & event)
 	return mousePosition;
 }
 
-void GameScene::Update()
+void ÑGameScene::Update(float dt)
 {
 	json playerInfo;
 	sf::Vector2f fieldSize(WINDOW_SIZE);
@@ -171,7 +182,7 @@ void GameScene::Update()
 	m_window.setView(m_view);
 }
 
-void GameScene::Render()
+void ÑGameScene::Render()
 {
 	m_window.clear(PURPLE);
 

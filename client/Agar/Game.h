@@ -2,20 +2,20 @@
 
 #include "Assets.h"
 #include "GameScene.h"
-//#include "PauseScene.h"
+#include "PauseScene.h"
 
 class CGame
 {
 public:
-	//CGame();
+	CGame();
 
-	//void DoGameLoop();
+	void DoGameLoop();
 
 private:
 	CAssets m_assets;
-	//sf::Clock m_clock;
-	//sf::RenderWindow m_window;
+	sf::Clock m_clock;
+	sf::RenderWindow m_window;
 
-	//CGameScene m_gameScene;
-	//CPauseScene m_pauseScene;
+	ÑGameScene m_gameScene;
+	CPauseScene m_pauseScene;
 }; 

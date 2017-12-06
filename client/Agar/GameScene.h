@@ -8,26 +8,31 @@
 #include "sheet.h"
 #include "AudioPlayer.h"
 
-class GameScene
+class ÑGameScene
 {
 public:
-	GameScene();
-	~GameScene()
+	ÑGameScene() = delete;
+	ÑGameScene(sf::RenderWindow & window, CAssets & assets);
+	~ÑGameScene()
 	{
 		m_audioPlayer.Stop(); 
 	}
 
-	void DoGameLoop();
+	SceneInfo Advance(float dt);
 
 private:
-	void Update();
+	SceneType m_nextSceneType = SceneType::ÑGameScene;
+	void CheckKeyboardEvents(const sf::Event & event);
+	void CheckKeyPressed(const sf::Event & event, bool & isNeedUpdate);
+
+	void Update(float dt);
 	void Render();
 	void CheckEvents();
 	void ProcessUpdateData(const std::string & path);
 	std::string GetId(const std::string & path);
 	sf::Vector2i CheckMouseEvents(const sf::Event & event);
 
-	sf::RenderWindow m_window;
+	sf::RenderWindow & m_window;
 	sf::Vector2i m_mousePosition;
 	CAgar m_agarView;
 	CAssets m_assets;

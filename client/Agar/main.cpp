@@ -1,9 +1,10 @@
 #include "stdafx.h"
 
-#include "GameScene.h"
+#include "Game.h"
 
 int main()
 {
-	GameScene app;
+	srand(unsigned(time(nullptr)));
+	CGame app;
 	app.DoGameLoop();
 }

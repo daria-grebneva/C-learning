@@ -20,11 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agar.h" />
+    <ClInclude Include="PauseText.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Assets.h" />
     <ClInclude Include="Enemies.h" />
     <ClInclude Include="Meal.h" />
+    <ClInclude Include="PauseScene.h" />
     <ClInclude Include="sheet.h" />
     <ClInclude Include="SocketMaster.h" />
     <ClInclude Include="stdafx.h" />
@@ -32,11 +34,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Agar.cpp" />
+    <ClCompile Include="PauseText.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Assets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="Meal.cpp" />
+    <ClCompile Include="PauseScene.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
