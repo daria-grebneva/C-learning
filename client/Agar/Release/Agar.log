@@ -1,22 +1,11 @@
-﻿  Agar.cpp
-  Assets.cpp
-  Enemies.cpp
-  Game.cpp
+﻿  Game.cpp
   GameScene.cpp
-  Meal.cpp
-  PauseScene.cpp
-  PauseText.cpp
-PauseScene.cpp(52): warning C4100: 'isNeedUpdate': unreferenced formal parameter
-GameScene.cpp(27): warning C4100: 'assets': unreferenced formal parameter
-GameScene.cpp(90): warning C4100: 'isNeedUpdate': unreferenced formal parameter
-GameScene.cpp(116): warning C4456: declaration of 'player' hides previous local declaration
-  GameScene.cpp(112): note: see declaration of 'player'
-GameScene.cpp(173): warning C4100: 'dt': unreferenced formal parameter
+  StartScene.cpp
   main.cpp
      Creating library E:\C-learning\client\Release\AgarMultiplayer.lib and object E:\C-learning\client\Release\AgarMultiplayer.exp
 LIBCMT.lib(initializers.obj) : warning LNK4098: defaultlib 'msvcrt.lib' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  0 of 7967 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  0 of 7968 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
@@ -25,10 +14,10 @@ sfml-main.lib(MainWin32.cpp.obj) : warning LNK4049: locally defined symbol ___p_
 UniversalLib.lib(Audio.obj) : warning LNK4099: PDB 'UniversalLib.pdb' was not found with 'UniversalLib.lib(Audio.obj)' or at 'E:\C-learning\client\Release\UniversalLib.pdb'; linking object as if no debug info
 UniversalLib.lib(AudioPlayer.obj) : warning LNK4099: PDB 'UniversalLib.pdb' was not found with 'UniversalLib.lib(AudioPlayer.obj)' or at 'E:\C-learning\client\Release\UniversalLib.pdb'; linking object as if no debug info
 UniversalLib.lib(AudioController.obj) : warning LNK4099: PDB 'UniversalLib.pdb' was not found with 'UniversalLib.lib(AudioController.obj)' or at 'E:\C-learning\client\Release\UniversalLib.pdb'; linking object as if no debug info
-SocketIO.lib(sio_client.obj) : warning LNK4099: PDB 'SocketIO.pdb' was not found with 'SocketIO.lib(sio_client.obj)' or at 'E:\C-learning\client\Release\SocketIO.pdb'; linking object as if no debug info
 SocketIO.lib(sio_socket.obj) : warning LNK4099: PDB 'SocketIO.pdb' was not found with 'SocketIO.lib(sio_socket.obj)' or at 'E:\C-learning\client\Release\SocketIO.pdb'; linking object as if no debug info
-SocketIO.lib(sio_client_impl.obj) : warning LNK4099: PDB 'SocketIO.pdb' was not found with 'SocketIO.lib(sio_client_impl.obj)' or at 'E:\C-learning\client\Release\SocketIO.pdb'; linking object as if no debug info
+SocketIO.lib(sio_client.obj) : warning LNK4099: PDB 'SocketIO.pdb' was not found with 'SocketIO.lib(sio_client.obj)' or at 'E:\C-learning\client\Release\SocketIO.pdb'; linking object as if no debug info
 SocketIO.lib(sio_packet.obj) : warning LNK4099: PDB 'SocketIO.pdb' was not found with 'SocketIO.lib(sio_packet.obj)' or at 'E:\C-learning\client\Release\SocketIO.pdb'; linking object as if no debug info
+SocketIO.lib(sio_client_impl.obj) : warning LNK4099: PDB 'SocketIO.pdb' was not found with 'SocketIO.lib(sio_client_impl.obj)' or at 'E:\C-learning\client\Release\SocketIO.pdb'; linking object as if no debug info
   Agar.vcxproj -> E:\C-learning\client\Release\AgarMultiplayer.exe
   E:\!sdk\SFML\bin\x86\Release\sfml-audio-2.dll
   E:\!sdk\SFML\bin\x86\Release\sfml-graphics-2.dll

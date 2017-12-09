@@ -7,16 +7,8 @@ CAssets::CAssets()
 {
 	AddImage(WINDOW_ICON, ICON_IMAGE_PATH);
 	AddRepeatedTexture(BACKGROUND, BACKGROUND_PATH);
-	
-	AddImage(WINDOW_ICON, "res/images/icon.png");
-	AddTexture(BUTTON_ACTIVE_TEXTURE, "res/images/button_active.png");
-	AddTexture(BUTTON_INACTIVE_TEXTURE, "res/images/button_inactive.png");
-	AddFont(ARIAL_FONT, "res/fonts/arial.ttf");
-}
-
-CAssets::~CAssets()
-{
-	
+	AddRepeatedTexture(START_BACKGROUND, START_BACKGROUND_PATH);
+	AddFont(ARIAL_FONT, FONTS_PATH);
 }
 
 void CAssets::AddImage(sf::Image & image, const std::string & path)

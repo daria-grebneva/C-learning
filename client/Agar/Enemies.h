@@ -5,7 +5,7 @@
 class CEnemy
 {
 public:
-	CEnemy();
+	CEnemy() = default;
 
 	void Draw(sf::RenderWindow & window) const;
 	void SetColor(const sf::Color & color);

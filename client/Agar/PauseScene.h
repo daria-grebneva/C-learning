@@ -17,16 +17,13 @@ public:
 private:
 	void Update(float dt);
 	void Render();
-
 	void CheckEvents();
-	void CheckKeyPressed(const sf::Event & event, bool & isNeedUpdate);
+	void CheckKeyPressed(const sf::Event & event);
 	void CheckKeyboardEvents(const sf::Event & event);
 
 	CAssets & m_assets;
 	sf::RenderWindow & m_window;
-
 	CPauseText m_pauseText;
-
 	sf::View m_view;
 	sf::Sprite m_background;
 

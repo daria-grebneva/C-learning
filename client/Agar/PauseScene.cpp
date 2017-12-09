@@ -4,15 +4,17 @@
 
 namespace
 {
-	static const auto PAUSE_TEXT = "PRESS SPACE TO BACK";
 
-	static const sf::Vector2f PAUSE_TEXT_POSITION((WINDOW_SIZE.x / 2 - PAUSE_TEXT_SIZE.x), (WINDOW_SIZE.y / 2 - PAUSE_TEXT_SIZE.y));
+static const auto PAUSE_TEXT = "PRESS SPACE TO BACK";
+
+static const sf::Vector2f PAUSE_TEXT_POSITION((WINDOW_SIZE.x / 2 - PAUSE_TEXT_SIZE.x), (WINDOW_SIZE.y / 2 - PAUSE_TEXT_SIZE.y));
+
 }
 
 CPauseScene::CPauseScene(sf::RenderWindow & window, CAssets & assets)
 	:m_window(window)
-	, m_assets(assets)
-	, m_pauseText(PAUSE_TEXT, PAUSE_TEXT_POSITION, m_assets)
+	,m_assets(assets)
+	,m_pauseText(PAUSE_TEXT, PAUSE_TEXT_POSITION, m_assets)
 {
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 }
@@ -45,11 +47,10 @@ void CPauseScene::CheckEvents()
 
 void CPauseScene::CheckKeyboardEvents(const sf::Event & event)
 {
-	bool isNeedUpdate = false;
-	CheckKeyPressed(event, isNeedUpdate);
+	CheckKeyPressed(event);
 }
 
-void CPauseScene::CheckKeyPressed(const sf::Event & event, bool & isNeedUpdate)
+void CPauseScene::CheckKeyPressed(const sf::Event & event)
 {
 	if (event.type == sf::Event::KeyPressed)
 	{

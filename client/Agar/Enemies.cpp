@@ -2,10 +2,6 @@
 
 #include "Enemies.h"
 
-CEnemy::CEnemy()
-{
-}
-
 void CEnemy::Draw(sf::RenderWindow & window) const
 {
 	window.draw(m_body);

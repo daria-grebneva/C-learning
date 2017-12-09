@@ -5,7 +5,7 @@
 class CMeal
 {
 public:
-	CMeal();
+	CMeal() = default;
 
 	void Draw(sf::RenderWindow & window) const;
 	void SetPosition(const sf::Vector2f & pos);

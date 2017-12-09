@@ -2,10 +2,6 @@
 
 #include "Meal.h"
 
-CMeal::CMeal()
-{
-}
-
 void CMeal::Draw(sf::RenderWindow & window) const
 {
 	window.draw(m_body);

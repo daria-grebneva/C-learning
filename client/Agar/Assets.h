@@ -4,7 +4,7 @@ struct CAssets
 {
 public:
 	CAssets();
-	~CAssets();
+	~CAssets() = default;
 
 	void AddImage(sf::Image & image, const std::string & path);
 	void AddRepeatedTexture(sf::Texture & texture, const std::string & path);
@@ -13,13 +13,8 @@ public:
 
 	sf::Image WINDOW_ICON;
 	sf::Texture BACKGROUND;
-
-	sf::Texture BACKGROUND_TEXTURE;
-	sf::Texture BUTTON_ACTIVE_TEXTURE;
-	sf::Texture BUTTON_INACTIVE_TEXTURE;
-
+	sf::Texture START_BACKGROUND;
 	sf::Font ARIAL_FONT;
-
 
 private:
 };

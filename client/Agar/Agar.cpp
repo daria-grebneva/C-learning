@@ -3,7 +3,7 @@
 #include "Agar.h"
 #include "sheet.h"
 
-void CAgar::Draw(sf::RenderWindow & window)
+void CAgar::Draw(sf::RenderWindow & window) const
 {
 	window.draw(m_body);
 }
@@ -21,7 +21,7 @@ float CAgar::GetRadius() const
 void CAgar::SetRadius(float newRadius)
 {
 	m_body.setRadius(newRadius);
-	m_body.setPointCount(static_cast<int>(newRadius * float(2 * M_PI)));
+	m_body.setPointCount(static_cast<int>(2 * M_PI * newRadius));
 }
 
 void CAgar::SetPosition(const sf::Vector2f & pos)

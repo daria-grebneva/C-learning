@@ -48,8 +48,11 @@
     <ClInclude Include="PauseScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StartScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="PauseText.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -80,8 +83,11 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StartScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="PauseText.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

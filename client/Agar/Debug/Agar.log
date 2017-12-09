@@ -1,22 +1,17 @@
-﻿  Agar.cpp
-  Button.cpp
-  Game.cpp
+﻿  Game.cpp
   GameScene.cpp
-  Assets.cpp
+  StartScene.cpp
   main.cpp
-  Enemies.cpp
-  Meal.cpp
-  PauseScene.cpp
-  stdafx.cpp
+e:\c-learning\client\agar\startscene.cpp(25): warning C4996: 'sf::Text::setColor': was declared deprecated
+  e:\!sdk\sfml\include\sfml\graphics\text.hpp(177): note: see declaration of 'sf::Text::setColor'
+e:\c-learning\client\agar\startscene.cpp(31): warning C4996: 'sf::Text::setColor': was declared deprecated
+  e:\!sdk\sfml\include\sfml\graphics\text.hpp(177): note: see declaration of 'sf::Text::setColor'
+e:\c-learning\client\agar\startscene.cpp(126): warning C4100: 'isNeedUpdate': unreferenced formal parameter
+e:\c-learning\client\agar\startscene.cpp(140): warning C4100: 'isConnected': unreferenced formal parameter
 e:\c-learning\client\agar\gamescene.cpp(27): warning C4100: 'assets': unreferenced formal parameter
-e:\c-learning\client\agar\gamescene.cpp(27): warning C4100: 'window': unreferenced formal parameter
-e:\c-learning\client\agar\gamescene.cpp(90): warning C4100: 'isNeedUpdate': unreferenced formal parameter
-e:\c-learning\client\agar\gamescene.cpp(128): warning C4060: switch statement contains no 'case' or 'default' labels
-e:\c-learning\client\agar\gamescene.cpp(104): warning C4100: 'isNeedUpdate': unreferenced formal parameter
-e:\c-learning\client\agar\gamescene.cpp(143): warning C4456: declaration of 'player' hides previous local declaration
-  e:\c-learning\client\agar\gamescene.cpp(139): note: see declaration of 'player'
-e:\c-learning\client\agar\gamescene.cpp(223): warning C4100: 'dt': unreferenced formal parameter
-e:\c-learning\client\agar\pausescene.cpp(54): warning C4100: 'window': unreferenced formal parameter
+e:\c-learning\client\agar\gamescene.cpp(122): warning C4456: declaration of 'player' hides previous local declaration
+  e:\c-learning\client\agar\gamescene.cpp(118): note: see declaration of 'player'
+e:\c-learning\client\agar\gamescene.cpp(179): warning C4100: 'dt': unreferenced formal parameter
   Agar.vcxproj -> E:\C-learning\client\Debug\AgarMultiplayer.exe
   Agar.vcxproj -> E:\C-learning\client\Debug\AgarMultiplayer.pdb (Partial PDB)
   E:\!sdk\SFML\bin\x86\Debug\sfml-audio-d-2.dll
