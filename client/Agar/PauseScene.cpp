@@ -17,6 +17,7 @@ CPauseScene::CPauseScene(sf::RenderWindow & window, CAssets & assets)
 	,m_pauseText(PAUSE_TEXT, PAUSE_TEXT_POSITION, m_assets)
 {
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
+	m_background.setTexture(m_assets.BACKGROUND);
 }
 
 SceneInfo CPauseScene::Advance(float dt)
@@ -27,7 +28,6 @@ SceneInfo CPauseScene::Advance(float dt)
 	m_window.setView(m_view);
 	Render();
 	m_window.display();
-	m_background.setTexture(m_assets.BACKGROUND);
 
 	return SceneInfo(m_nextSceneType);
 }

@@ -28,6 +28,7 @@ static const auto KEY_UPDATE_DATA = "u";
 static const auto KEY_PLAYERS = "p";
 static const auto KEY_FOOD = "f";
 static const auto KEY_ENEMIES = "e";
+static const auto KEY_PLAYER_CREATED = "c";
 
 enum class SceneType
 {

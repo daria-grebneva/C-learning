@@ -2,17 +2,26 @@
 
 #include "GameScene.h"
 
-using json = nlohmann::json;
+namespace
+{
 
-sf::Color takeJsonColor(nlohmann::basic_json <> colorObj)
+static const unsigned FONT_SIZE = 30;
+
+static const sf::Color BLACK = sf::Color::Black;
+
+sf::Color TakeJsonColor(nlohmann::basic_json<> colorObj)
 {
 	const std::string color = colorObj.dump();
 	return {
 		uint8_t(std::stoi(color.substr(2, 2), nullptr, 16)),
 		uint8_t(std::stoi(color.substr(4, 2), nullptr, 16)),
 		uint8_t(std::stoi(color.substr(6, 2), nullptr, 16))
-	}; 
+	};
 }
+
+}
+
+using json = nlohmann::json;
 
 ÑGameScene::~ÑGameScene()
 {
@@ -25,9 +34,9 @@ sf::Color takeJsonColor(nlohmann::basic_json <> colorObj)
 	,m_window(window)
 	,m_table(window, assets)
 {
-	m_socketMaster.SetHandler("player_created", [&](sio::event & message)
+	m_socketMaster.SetHandler(KEY_PLAYER_CREATED, [&](sio::event & e)
 	{
-		m_heroId = GetId(message.get_message()->get_string());
+		m_heroId = GetId(e.get_message()->get_string());
 	});
 	m_socketMaster.SetHandler(KEY_UPDATE_DATA, [&](sio::event & e) 
 	{
@@ -45,7 +54,7 @@ sf::Color takeJsonColor(nlohmann::basic_json <> colorObj)
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 }
 
-const std::string ÑGameScene::GetId(const std::string & path)
+std::string ÑGameScene::GetId(const std::string & path) const
 {
 	return json::parse(path)["id_player"];
 }
@@ -104,10 +113,34 @@ void ÑGameScene::ProcessUpdateData(const std::string & path)
 	const auto enemies = data[KEY_ENEMIES];
 	const auto players = data[KEY_PLAYERS];
 	const auto playerStringLength = data[KEY_PLAYERS].size();
+	//TODO:: ðàçîáðàòüñÿ íà ñåðâåðå ñ äàííûìè äëÿ òàáëèöû
+	//const auto table = data["t"];
 
-	DrawPlayers(m_agarics, m_agar, players, m_heroId, m_agarView);
+	//DrawElementsForTable(table);
+	DrawPlayers(m_agarics, m_agar, players, m_heroId, m_agarView); 
 	DrawFood(m_meal, foodStringLength, food);
 	DrawEnemies(m_enemies, enemiesStringLength, enemies);
+}
+
+void ÑGameScene::DrawElementsForTable(const nlohmann::basic_json<> obj)
+{
+	for (auto & player : obj)
+	{
+		std::string newStr = player["nickname"];
+		m_text.setFont(m_assets.ARIAL_FONT);
+		m_text.setString(newStr);
+		m_text.setCharacterSize(FONT_SIZE);
+		m_text.setFillColor(BLACK);
+		m_text.setPosition(m_agarView.GetPosition());
+		m_window.draw(m_text);
+	}
+}
+
+const sf::Vector2f ÑGameScene::SetPosition(const sf::Vector2f & center)
+{
+	const int xCoord = WINDOW_SIZE.x / 2;
+	const int yCoord = -(WINDOW_SIZE.y / 2);
+	return (center + sf::Vector2f(xCoord, yCoord));
 }
 
 void ÑGameScene::DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const nlohmann::basic_json<> obj, std::string & id, CAgar & agarView)
@@ -115,10 +148,9 @@ void ÑGameScene::DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const n
 	unsigned index = 0;
 	for (auto & player : obj)
 	{
-		InsertDataIntoTable(player);
 		if (obj.size() > agarics.size())
 		{
-			agar.SetColor(takeJsonColor(player["color"]));
+			agar.SetColor(TakeJsonColor(player["color"]));
 			agar.SetPosition(sf::Vector2f((float(player["x"]) *  float(FIELD_SIZE.x)), (float(player["y"]) *  float(FIELD_SIZE.y))));
 			agar.SetRadius(float(player["radius"]) * FIELD_COEF);
 			agarics.push_back(agar);
@@ -129,7 +161,7 @@ void ÑGameScene::DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const n
 		}
 		else
 		{
-			agarics[index].SetColor(takeJsonColor(player["color"]));
+			agarics[index].SetColor(TakeJsonColor(player["color"]));
 			agarics[index].SetPosition(sf::Vector2f((float(player["x"]) *  float(FIELD_SIZE.x)), (float(player["y"]) *  float(FIELD_SIZE.y))));
 			agarics[index].SetRadius(float(player["radius"]) * FIELD_COEF);
 			if (player["id_player"] == id)
@@ -141,24 +173,12 @@ void ÑGameScene::DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const n
 	}
 }
 
-void ÑGameScene::InsertDataIntoTable(const nlohmann::basic_json<> obj)
-{
-	const float radius = float(obj["radius"]) * FIELD_COEF;
-	const std::string nickname = obj["nickname"];
-	m_tableMap.insert(tableMap::value_type(radius, nickname));
-}
-
-void ÑGameScene::DrawDataTable()
-{
-
-}
-
 void ÑGameScene::DrawEnemies(std::array<CEnemy, NUMBER_ENEMIES> & enemy, size_t arrSize, const nlohmann::basic_json<> obj)
 {
 	for (size_t j = 0; j < arrSize; ++j)
 	{
 		auto colorEnemy = obj[j]["color"];
-		enemy[j].SetColor(takeJsonColor(colorEnemy));
+		enemy[j].SetColor(TakeJsonColor(colorEnemy));
 		enemy[j].SetPosition(sf::Vector2f(float(obj[j]["x"]) * FIELD_SIZE.x, float(obj[j]["y"]) * FIELD_SIZE.y));
 		enemy[j].SetRadius(float(obj[j]["radius"]) * FIELD_COEF);
 	}
@@ -169,7 +189,7 @@ void ÑGameScene::DrawFood(std::array<CMeal, NUMBER_MEAL> & meal, size_t arrSize,
 	for (size_t j = 0; j < arrSize; ++j)
 	{
 		auto colorEnemy = obj[j]["color"];
-		meal[j].SetColor(takeJsonColor(colorEnemy));
+		meal[j].SetColor(TakeJsonColor(colorEnemy));
 		meal[j].SetPosition(sf::Vector2f(float(obj[j]["x"]) * FIELD_SIZE.x, float(obj[j]["y"]) * FIELD_SIZE.y));
 		meal[j].SetRadius(float(obj[j]["radius"]) * FIELD_COEF);
 	}
@@ -221,4 +241,5 @@ void ÑGameScene::Render()
 	
 	m_agarView.Draw(m_window);
 	m_table.Draw(m_window);
+	m_window.draw(m_text);
 }

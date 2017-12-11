@@ -1,6 +1,7 @@
 #pragma once
 
-#include <SFML\Graphics.hpp>
+#include "stdafx.h"
+
 #include "Assets.h"
 #include "sheet.h"
 
@@ -11,6 +12,7 @@ public:
 	RatingTable(sf::RenderWindow & window, CAssets & assets);
 	void SetPosition(const sf::Vector2f & center);
 	void Draw(sf::RenderWindow & window);
+	sf::Vector2f GetPosition() const;
 
 private:
 	CAssets & m_assets;

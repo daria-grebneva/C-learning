@@ -1,7 +1,5 @@
 #pragma once
 
-#include "stdafx.h"
-#include "sheet.h"
 #include "Assets.h"
 
 class CPauseText

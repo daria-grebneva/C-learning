@@ -1,14 +1,14 @@
 #pragma once
 
 #include <json.hpp>
+#include <AudioPlayer.h>
+
 #include "SocketMaster.h"
 #include "Assets.h"
 #include "Agar.h"
 #include "Enemies.h"
 #include "Meal.h"
 #include "sheet.h"
-#include "AudioPlayer.h"
-#include "StartScene.h"
 #include "RatingTable.h"
 
 class ÑGameScene
@@ -27,13 +27,13 @@ private:
 	void Render();
 	void CheckEvents();
 	void ProcessUpdateData(const std::string & path);
-	const std::string GetId(const std::string & path);
+	std::string GetId(const std::string & path) const;
 	void CheckMouseEvents(const sf::Event & event);
 	void DrawEnemies(std::array<CEnemy, NUMBER_ENEMIES> & enemy, size_t arrSize, const nlohmann::basic_json<> obj);
 	void DrawFood(std::array<CMeal, NUMBER_MEAL> & meal, size_t arrSize, const nlohmann::basic_json<> obj);
 	void DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const nlohmann::basic_json<> obj, std::string & id, CAgar & agarView);
-	void InsertDataIntoTable(const nlohmann::basic_json<> obj);
-	void DrawDataTable();
+	void DrawElementsForTable(const nlohmann::basic_json<> obj);
+	const sf::Vector2f SetPosition(const sf::Vector2f & center);
 
 	SceneType m_nextSceneType = SceneType::ÑGameScene;
 	sf::RenderWindow & m_window;
@@ -55,4 +55,5 @@ private:
 	RatingTable m_table;
 	typedef std::map<const float, const std::string> tableMap;
 	tableMap m_tableMap;
+	sf::Text m_text;
 };
