@@ -27,6 +27,7 @@ SceneInfo CPauseScene::Advance(float dt)
 	m_window.setView(m_view);
 	Render();
 	m_window.display();
+	m_background.setTexture(m_assets.BACKGROUND);
 
 	return SceneInfo(m_nextSceneType);
 }
@@ -72,8 +73,6 @@ void CPauseScene::Update(float dt)
 void CPauseScene::Render()
 {
 	m_window.clear(sf::Color::White);
-	m_background.setTexture(m_assets.BACKGROUND);
 	m_window.draw(m_background);
-
 	m_pauseText.Draw(m_window);
 }	

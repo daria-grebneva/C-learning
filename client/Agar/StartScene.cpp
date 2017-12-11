@@ -15,29 +15,33 @@ static const unsigned CTRL = 13;
 static const unsigned ENTER = 10;
 static const unsigned NUMBER_OF_SYMBOLS = 18;
 static const unsigned ASCII_MAX_SYMBOLS_NUMBER = 128;
+static const unsigned BASIC_FONT_SIZE = 30;
+static const unsigned INFO_FONT_SIZE = 35;
+static const unsigned INFO_FONT_STYLE = 2;
+static const sf::Color BLACK = sf::Color::Black;
 
 }
 
 CStartScene::CStartScene(sf::RenderWindow & window, CAssets & assets, SocketMaster & socketMaster)
 	:m_window(window)
-	, m_assets(assets)
-	, m_socket(socketMaster)
+	,m_assets(assets)
+	,m_socket(socketMaster)
 {
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
-	nickname = DEFALUT_INPUT_STRING;
+	m_nickname = DEFALUT_INPUT_STRING;
 
 	m_text.setFont(m_assets.ARIAL_FONT);
-	m_text.setString(nickname);
+	m_text.setString(m_nickname);
 	m_text.setPosition(TEXT_POSITION);
-	m_text.setCharacterSize(30);
-	m_text.setFillColor(sf::Color::Black);
+	m_text.setCharacterSize(BASIC_FONT_SIZE);
+	m_text.setFillColor(BLACK);
 
-	m_information_text.setFont(m_assets.ARIAL_FONT);
-	m_information_text.setString(INFO_TEXT);
-	m_information_text.setPosition(INFO_TEXT_POSITION);
-	m_information_text.setCharacterSize(35);
-	m_information_text.setStyle(2);
-	m_information_text.setFillColor(sf::Color::Black);
+	m_informationText.setFont(m_assets.ARIAL_FONT);
+	m_informationText.setString(INFO_TEXT);
+	m_informationText.setPosition(INFO_TEXT_POSITION);
+	m_informationText.setCharacterSize(INFO_FONT_SIZE);
+	m_informationText.setStyle(INFO_FONT_STYLE);
+	m_informationText.setFillColor(BLACK);
 }
 
 SceneInfo CStartScene::Advance(float dt, bool isConnected)
@@ -62,38 +66,38 @@ void CStartScene::CheckInputText(const sf::Event & event)
 		{
 			if (codeKey == int(sf::Keyboard::Return))
 			{
-				if (!nickname.empty() && nickname != DEFALUT_INPUT_STRING)
+				if ((!m_nickname.empty()) && (m_nickname != DEFALUT_INPUT_STRING))
 				{
-					nickname.pop_back();
+					m_nickname.pop_back();
 				}
 				else
 				{
-					nickname = "";
+					m_nickname = "";
 				}
 			}
 			else if (codeKey == BACKSPACE)
 			{
-				if (!nickname.empty() && nickname != DEFALUT_INPUT_STRING)
+				if ((!m_nickname.empty()) && (m_nickname != DEFALUT_INPUT_STRING))
 				{
-					nickname.pop_back();
+					m_nickname.pop_back();
 				}
 				else
 				{
-					nickname = "";
+					m_nickname = "";
 				}
 			}
 			else if ((codeKey != CTRL) && (codeKey != ENTER))
 			{
-				if (nickname == DEFALUT_INPUT_STRING)
+				if (m_nickname == DEFALUT_INPUT_STRING)
 				{
-					nickname = "";
+					m_nickname = "";
 				}
-				if (nickname.size() < NUMBER_OF_SYMBOLS)
+				if (m_nickname.size() < NUMBER_OF_SYMBOLS)
 				{
-					nickname += static_cast<char>(codeKey);
+					m_nickname += static_cast<char>(codeKey);
 				}
 			}
-			m_text.setString(nickname);
+			m_text.setString(m_nickname);
 		}
 	}
 }
@@ -102,13 +106,13 @@ void CStartScene::DrawConnectedInfo(bool isConnected)
 {
 	if (!isConnected)
 	{
-		m_window.draw(m_information_text);
+		m_window.draw(m_informationText);
 	}
 }
 
 bool CStartScene::IsNicknameStringEmpty() const
 {
-	return (!nickname.empty() && nickname != DEFALUT_INPUT_STRING);
+	return ((!m_nickname.empty()) && (m_nickname != DEFALUT_INPUT_STRING));
 }
 
 void CStartScene::CheckEvents(bool isConnected)
@@ -139,7 +143,8 @@ void CStartScene::CheckKeyPressed(const sf::Event & event, bool isConnected)
 		{
 		case sf::Keyboard::Return:
 			m_nextSceneType = SceneType::ÑGameScene;
-			m_socket.Emit(KEY_NICKNAME, nickname);
+			m_socket.Emit(KEY_NEW_PLAYER);
+			m_socket.Emit(KEY_NICKNAME, m_nickname);
 		default:
 			break;
 		}

@@ -2,12 +2,7 @@
 
 #include "GameScene.h"
 
-namespace
-{
-
-static const auto PORT = "https://127.0.0.1:5000";
-
-}
+using json = nlohmann::json;
 
 sf::Color takeJsonColor(nlohmann::basic_json <> colorObj)
 {
@@ -19,16 +14,20 @@ sf::Color takeJsonColor(nlohmann::basic_json <> colorObj)
 	}; 
 }
 
-ÑGameScene::ÑGameScene(sf::RenderWindow & window, CAssets assets)
-	:m_socketMaster(PORT)
-	,m_audioPlayer("res/sounds/")
-	,m_window(window)
+ÑGameScene::~ÑGameScene()
 {
-	m_socketMaster.Emit(KEY_NEW_PLAYER);
-	m_socketMaster.SetHandler("player_created", [&](sio::event & m)
+	m_audioPlayer.Stop();
+}
+
+ÑGameScene::ÑGameScene(sf::RenderWindow & window, CAssets assets, SocketMaster & socketMaster)
+	:m_socketMaster(socketMaster)
+	,m_audioPlayer(AUDIO_PATH)
+	,m_window(window)
+	,m_table(window, assets)
+{
+	m_socketMaster.SetHandler("player_created", [&](sio::event & message)
 	{
-		m_heroId = GetId(m.get_message()->get_string());
-		
+		m_heroId = GetId(message.get_message()->get_string());
 	});
 	m_socketMaster.SetHandler(KEY_UPDATE_DATA, [&](sio::event & e) 
 	{
@@ -41,13 +40,12 @@ sf::Color takeJsonColor(nlohmann::basic_json <> colorObj)
 	m_window.create(videoMode, WINDOW_TITLE, WINDOW_STYLE, contextSettings);
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(WINDOW_FRAME_LIMIT);
-
 	const auto icon = m_assets.WINDOW_ICON;
 	m_window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 }
 
-std::string ÑGameScene::GetId(const std::string & path)
+const std::string ÑGameScene::GetId(const std::string & path)
 {
 	return json::parse(path)["id_player"];
 }
@@ -117,6 +115,7 @@ void ÑGameScene::DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const n
 	unsigned index = 0;
 	for (auto & player : obj)
 	{
+		InsertDataIntoTable(player);
 		if (obj.size() > agarics.size())
 		{
 			agar.SetColor(takeJsonColor(player["color"]));
@@ -140,6 +139,18 @@ void ÑGameScene::DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const n
 		}
 		++index;
 	}
+}
+
+void ÑGameScene::InsertDataIntoTable(const nlohmann::basic_json<> obj)
+{
+	const float radius = float(obj["radius"]) * FIELD_COEF;
+	const std::string nickname = obj["nickname"];
+	m_tableMap.insert(tableMap::value_type(radius, nickname));
+}
+
+void ÑGameScene::DrawDataTable()
+{
+
 }
 
 void ÑGameScene::DrawEnemies(std::array<CEnemy, NUMBER_ENEMIES> & enemy, size_t arrSize, const nlohmann::basic_json<> obj)
@@ -186,6 +197,7 @@ void ÑGameScene::Update(float dt)
 	m_socketMaster.Emit(KEY_MOVEMENT, playerInfo.dump());
 	m_view.setCenter(m_agarView.GetPosition() + m_agarView.GetRadius() * sf::Vector2f(1, 1));
 	m_window.setView(m_view);
+	m_table.SetPosition(m_view.getCenter());
 }
 
 void ÑGameScene::Render()
@@ -208,4 +220,5 @@ void ÑGameScene::Render()
 	}
 	
 	m_agarView.Draw(m_window);
+	m_table.Draw(m_window);
 }

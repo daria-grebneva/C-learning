@@ -15,7 +15,6 @@ public:
 	SceneInfo Advance(float dt, bool isConnected);
 
 private:
-
 	void Update(float dt);
 	void Render();
 	void CheckEvents(bool isConnected);
@@ -31,8 +30,8 @@ private:
 	sf::View m_view;
 	sf::Sprite m_background;
 	sf::Text m_text;
-	sf::Text m_information_text;
-	std::string nickname;
+	sf::Text m_informationText;
+	std::string m_nickname;
 	std::string m_user;
 
 	SceneType m_nextSceneType = SceneType::CStartScene;

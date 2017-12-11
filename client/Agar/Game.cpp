@@ -13,7 +13,7 @@ static const auto PORT = "https://127.0.0.1:5000";
 CGame::CGame()
 	:m_window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), WINDOW_TITLE, WINDOW_STYLE)
 	,m_socketMaster(PORT)
-	,m_gameScene(m_window, m_assets)
+	,m_gameScene(m_window, m_assets, m_socketMaster)
 	,m_pauseScene(m_window, m_assets)
 	,m_startScene(m_window, m_assets, m_socketMaster)
 {

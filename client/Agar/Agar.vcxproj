@@ -27,6 +27,7 @@
     <ClInclude Include="Enemies.h" />
     <ClInclude Include="Meal.h" />
     <ClInclude Include="PauseScene.h" />
+    <ClInclude Include="RatingTable.h" />
     <ClInclude Include="sheet.h" />
     <ClInclude Include="SocketMaster.h" />
     <ClInclude Include="StartScene.h" />
@@ -43,6 +44,7 @@
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="Meal.cpp" />
     <ClCompile Include="PauseScene.cpp" />
+    <ClCompile Include="RatingTable.cpp" />
     <ClCompile Include="StartScene.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
@@ -169,7 +171,7 @@ xcopy /Y /E /I "$(LIB_PATH)SDL_mixer\lib\$(PlatformTarget)" "$(TargetDir)"</Comm
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>sfml-main.lib;sfml-window.lib;sfml-graphics.lib;libboost_random-vc141-mt-s-1_65_1.lib;libboost_regex-vc141-mt-s-1_65_1.lib;libboost_serialization-vc141-mt-s-1_65_1.lib;libboost_program_options-vc141-mt-s-1_65_1.lib;libboost_signals-vc141-mt-s-1_65_1.lib;libboost_system-vc141-mt-s-1_65_1.lib;libboost_filesystem-vc141-mt-s-1_65_1.lib;sfml-system.lib;UniversalLib.lib;%(AdditionalDependencies)</AdditionalDependencies>

@@ -54,6 +54,9 @@
     <ClInclude Include="PauseText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RatingTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assets.cpp">
@@ -87,6 +90,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PauseText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RatingTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

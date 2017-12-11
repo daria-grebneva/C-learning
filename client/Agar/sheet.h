@@ -10,6 +10,7 @@ static const std::string ICON_IMAGE_PATH = "res/images/icon.png";
 static const std::string BACKGROUND_PATH = "res/images/screen_saver_5.png";
 static const std::string START_BACKGROUND_PATH = "res/images/start_screen.png";
 static const std::string FONTS_PATH = "res/fonts/arial.ttf";
+static const std::string AUDIO_PATH = "res/sounds/";
 static unsigned ANTIALIASING_LEVEL = 8; 
 
 static const sf::Vector2f PAUSE_TEXT_SIZE(250, 100);
