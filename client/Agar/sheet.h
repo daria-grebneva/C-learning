@@ -2,6 +2,7 @@
 
 static const sf::Vector2u WINDOW_SIZE = { 1400, 800 };
 static const sf::Vector2i FIELD_SIZE = { 1700, 1200 };
+static const sf::Vector2f TABLE_SIZE = { 250, 300 };
 static const float FIELD_COEF = 3500;
 static const std::string WINDOW_TITLE = "AGARIO";
 static const auto WINDOW_STYLE = sf::Style::Close;

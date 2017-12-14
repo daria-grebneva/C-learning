@@ -5,7 +5,7 @@
 namespace
 {
 
-static const sf::Vector2f TABLE_SIZE = { 250, 300 };
+
 
 static const auto COLOR_CLIENT = sf::Color({ 159, 255, 34 });
 

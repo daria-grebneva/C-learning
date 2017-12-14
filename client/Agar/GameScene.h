@@ -32,8 +32,9 @@ private:
 	void DrawEnemies(std::array<CEnemy, NUMBER_ENEMIES> & enemy, size_t arrSize, const nlohmann::basic_json<> obj);
 	void DrawFood(std::array<CMeal, NUMBER_MEAL> & meal, size_t arrSize, const nlohmann::basic_json<> obj);
 	void DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const nlohmann::basic_json<> obj, std::string & id, CAgar & agarView);
-	void DrawElementsForTable(const nlohmann::basic_json<> obj);
+	void SetElementsForTable(const nlohmann::basic_json<> obj);
 	const sf::Vector2f SetPosition(const sf::Vector2f & center);
+	void SetTableTextPosition(const sf::Vector2f & center, float addingCoeff);
 
 	SceneType m_nextSceneType = SceneType::ÑGameScene;
 	sf::RenderWindow & m_window;
@@ -52,8 +53,8 @@ private:
 	sf::Sprite m_background;
 	CAudioPlayer m_audioPlayer;
 	SocketMaster & m_socketMaster;
-	RatingTable m_table;
-	typedef std::map<const float, const std::string> tableMap;
-	tableMap m_tableMap;
-	sf::Text m_text;
+	RatingTable m_tableBackground;
+	sf::Text m_tableElement;
+	std::vector<std::string> m_tableNicknames;
+
 };

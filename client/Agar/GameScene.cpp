@@ -7,6 +7,8 @@ namespace
 
 static const unsigned FONT_SIZE = 30;
 
+static const float ROW_MARGIN = 10;
+
 static const sf::Color BLACK = sf::Color::Black;
 
 sf::Color TakeJsonColor(nlohmann::basic_json<> colorObj)
@@ -32,7 +34,7 @@ using json = nlohmann::json;
 	:m_socketMaster(socketMaster)
 	,m_audioPlayer(AUDIO_PATH)
 	,m_window(window)
-	,m_table(window, assets)
+	,m_tableBackground(window, assets)
 {
 	m_socketMaster.SetHandler(KEY_PLAYER_CREATED, [&](sio::event & e)
 	{
@@ -49,6 +51,9 @@ using json = nlohmann::json;
 	m_window.create(videoMode, WINDOW_TITLE, WINDOW_STYLE, contextSettings);
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(WINDOW_FRAME_LIMIT);
+	m_tableElement.setFont(m_assets.ARIAL_FONT);
+	m_tableElement.setCharacterSize(FONT_SIZE);
+	m_tableElement.setFillColor(BLACK);
 	const auto icon = m_assets.WINDOW_ICON;
 	m_window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
@@ -113,26 +118,27 @@ void ÑGameScene::ProcessUpdateData(const std::string & path)
 	const auto enemies = data[KEY_ENEMIES];
 	const auto players = data[KEY_PLAYERS];
 	const auto playerStringLength = data[KEY_PLAYERS].size();
-	//TODO:: ðàçîáðàòüñÿ íà ñåðâåðå ñ äàííûìè äëÿ òàáëèöû
-	//const auto table = data["t"];
+	const auto table = data["t"];
 
-	//DrawElementsForTable(table);
+	SetElementsForTable(table);
 	DrawPlayers(m_agarics, m_agar, players, m_heroId, m_agarView); 
 	DrawFood(m_meal, foodStringLength, food);
 	DrawEnemies(m_enemies, enemiesStringLength, enemies);
 }
 
-void ÑGameScene::DrawElementsForTable(const nlohmann::basic_json<> obj)
+void ÑGameScene::SetTableTextPosition(const sf::Vector2f & center, float rowTop)
+{
+	const int xCoord = WINDOW_SIZE.x / 2;
+	const int yCoord = -(WINDOW_SIZE.y / 2);
+	m_tableElement.setPosition(center + sf::Vector2f(xCoord - TABLE_SIZE.x + ROW_MARGIN, yCoord + rowTop));
+}
+
+void ÑGameScene::SetElementsForTable(const nlohmann::basic_json<> obj)
 {
 	for (auto & player : obj)
 	{
 		std::string newStr = player["nickname"];
-		m_text.setFont(m_assets.ARIAL_FONT);
-		m_text.setString(newStr);
-		m_text.setCharacterSize(FONT_SIZE);
-		m_text.setFillColor(BLACK);
-		m_text.setPosition(m_agarView.GetPosition());
-		m_window.draw(m_text);
+		m_tableNicknames.push_back(newStr);
 	}
 }
 
@@ -217,7 +223,13 @@ void ÑGameScene::Update(float dt)
 	m_socketMaster.Emit(KEY_MOVEMENT, playerInfo.dump());
 	m_view.setCenter(m_agarView.GetPosition() + m_agarView.GetRadius() * sf::Vector2f(1, 1));
 	m_window.setView(m_view);
-	m_table.SetPosition(m_view.getCenter());
+	m_tableBackground.SetPosition(m_view.getCenter());
+	for (size_t j = 0; j < m_tableNicknames.size(); ++j)
+	{
+		m_tableElement.setString(m_tableNicknames[j]);
+		SetTableTextPosition(m_view.getCenter(), ROW_MARGIN * j);
+		m_window.draw(m_tableElement);
+	}
 }
 
 void ÑGameScene::Render()
@@ -240,6 +252,6 @@ void ÑGameScene::Render()
 	}
 	
 	m_agarView.Draw(m_window);
-	m_table.Draw(m_window);
-	m_window.draw(m_text);
+	m_tableBackground.Draw(m_window);
+	m_window.draw(m_tableElement);
 }
