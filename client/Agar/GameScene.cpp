@@ -218,6 +218,21 @@ void CGameScene::DrawFood(std::array<CMeal, NUMBER_MEAL> & meal, size_t arrSize,
 	}
 }
 
+void CGameScene::DrawTable()
+{
+	m_tableBackground.Draw(m_window);
+	for (size_t j = 0; j < m_tableNicknames.size(); ++j)
+	{
+		sf::Text tableElement;
+		m_tableElement.setFont(m_assets.ARIAL_FONT);
+		m_tableElement.setCharacterSize(FONT_SIZE);
+		m_tableElement.setFillColor(BLACK);
+		m_tableElement.setString(m_tableNicknames[j]);
+		SetTableTextPosition(m_view.getCenter(), ROW_MARGIN * j);
+		m_window.draw(m_tableElement);
+	}
+}
+
 void CGameScene::CheckMouseEvents(const sf::Event & event)
 {
 	if (event.type == sf::Event::MouseMoved)
@@ -264,15 +279,5 @@ void CGameScene::Render()
 	}
 
 	m_agarView.Draw(m_window);
-	m_tableBackground.Draw(m_window);
-	for (size_t j = 0; j < m_tableNicknames.size(); ++j)
-	{
-		sf::Text tableElement;
-		m_tableElement.setFont(m_assets.ARIAL_FONT);
-		m_tableElement.setCharacterSize(FONT_SIZE);
-		m_tableElement.setFillColor(BLACK);
-		m_tableElement.setString(m_tableNicknames[j]);
-		SetTableTextPosition(m_view.getCenter(), ROW_MARGIN * j);
-		m_window.draw(m_tableElement);
-	}
+	DrawTable();
 }
