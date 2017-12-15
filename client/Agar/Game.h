@@ -19,7 +19,7 @@ private:
 	CAssets m_assets;
 	sf::Clock m_clock;
 	sf::RenderWindow m_window;
-	ÑGameScene m_gameScene;
+	CGameScene m_gameScene;
 	CPauseScene m_pauseScene;
 	CStartScene m_startScene;
 }; 

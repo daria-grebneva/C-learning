@@ -33,7 +33,7 @@ void CGame::DoGameLoop()
 		switch (info.nextSceneType)
 		{
 		case SceneType::ÑGameScene:
-			info = m_gameScene.Advance(dt);
+			info = m_gameScene.Advance(dt, IsConnected());
 			break;
 		case SceneType::CStartScene:
 			info = m_startScene.Advance(dt, IsConnected());

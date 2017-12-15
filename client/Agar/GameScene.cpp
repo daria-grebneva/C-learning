@@ -1,49 +1,59 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 
 #include "GameScene.h"
 
 namespace
 {
 
-static const unsigned FONT_SIZE = 30;
+	static const unsigned FONT_SIZE = 30;
 
-static const float ROW_MARGIN = 10;
+	static const float ROW_MARGIN = 40;
 
-static const sf::Color BLACK = sf::Color::Black;
+	static const float MARGIN_LEFT = 10;
 
-sf::Color TakeJsonColor(nlohmann::basic_json<> colorObj)
-{
-	const std::string color = colorObj.dump();
-	return {
-		uint8_t(std::stoi(color.substr(2, 2), nullptr, 16)),
-		uint8_t(std::stoi(color.substr(4, 2), nullptr, 16)),
-		uint8_t(std::stoi(color.substr(6, 2), nullptr, 16))
-	};
-}
+	static const unsigned INFO_FONT_SIZE = 45;
+
+	static const unsigned INFO_FONT_STYLE = 2;
+
+	static const sf::Vector2f INFO_TEXT_MARGIN = { 670, 0 };
+
+	static const std::string INFO_TEXT = "You have lost connection with the server, please restart the game";
+
+	static const sf::Color BLACK = sf::Color::Black;
+
+	sf::Color TakeJsonColor(nlohmann::basic_json<> colorObj)
+	{
+		const std::string color = colorObj.dump();
+		return {
+			uint8_t(std::stoi(color.substr(2, 2), nullptr, 16)),
+			uint8_t(std::stoi(color.substr(4, 2), nullptr, 16)),
+			uint8_t(std::stoi(color.substr(6, 2), nullptr, 16))
+		};
+	}
 
 }
 
 using json = nlohmann::json;
 
-ÑGameScene::~ÑGameScene()
+CGameScene::~CGameScene()
 {
 	m_audioPlayer.Stop();
 }
 
-ÑGameScene::ÑGameScene(sf::RenderWindow & window, CAssets assets, SocketMaster & socketMaster)
+CGameScene::CGameScene(sf::RenderWindow & window, CAssets assets, SocketMaster & socketMaster)
 	:m_socketMaster(socketMaster)
-	,m_audioPlayer(AUDIO_PATH)
-	,m_window(window)
-	,m_tableBackground(window, assets)
+	, m_audioPlayer(AUDIO_PATH)
+	, m_window(window)
+	, m_tableBackground(window, assets)
 {
 	m_socketMaster.SetHandler(KEY_PLAYER_CREATED, [&](sio::event & e)
 	{
 		m_heroId = GetId(e.get_message()->get_string());
 	});
-	m_socketMaster.SetHandler(KEY_UPDATE_DATA, [&](sio::event & e) 
+	m_socketMaster.SetHandler(KEY_UPDATE_DATA, [&](sio::event & e)
 	{
-			ProcessUpdateData(e.get_message()->get_string());
-	}); 
+		ProcessUpdateData(e.get_message()->get_string());
+	});
 	m_audioPlayer.SetVolume(0);
 	const sf::VideoMode videoMode(WINDOW_SIZE.x, WINDOW_SIZE.y);
 	sf::ContextSettings contextSettings;
@@ -51,38 +61,51 @@ using json = nlohmann::json;
 	m_window.create(videoMode, WINDOW_TITLE, WINDOW_STYLE, contextSettings);
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(WINDOW_FRAME_LIMIT);
-	m_tableElement.setFont(m_assets.ARIAL_FONT);
-	m_tableElement.setCharacterSize(FONT_SIZE);
-	m_tableElement.setFillColor(BLACK);
 	const auto icon = m_assets.WINDOW_ICON;
 	m_window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 }
 
-std::string ÑGameScene::GetId(const std::string & path) const
+std::string CGameScene::GetId(const std::string & path) const
 {
 	return json::parse(path)["id_player"];
 }
 
-SceneInfo ÑGameScene::Advance(float dt)
+SceneInfo CGameScene::Advance(float dt, bool isConnected)
 {
-	m_nextSceneType = SceneType::ÑGameScene;
+	m_nextSceneType = SceneType::Ð¡GameScene;
 	CheckEvents();
 	Update(dt);
 	Render();
+	DrawConnectedInfo(isConnected);
 	m_window.display();
 
 	return SceneInfo(m_nextSceneType);
 }
 
-void ÑGameScene::CheckEvents()
+void CGameScene::DrawConnectedInfo(bool isConnected)
+{
+	if (!isConnected)
+	{
+		sf::Text informationText;
+		informationText.setFont(m_assets.ARIAL_FONT);
+		informationText.setString(INFO_TEXT);
+		informationText.setPosition(m_view.getCenter() - INFO_TEXT_MARGIN);
+		informationText.setCharacterSize(INFO_FONT_SIZE);
+		informationText.setStyle(INFO_FONT_STYLE);
+		informationText.setFillColor(BLACK);
+		m_window.draw(informationText);
+	}
+}
+
+void CGameScene::CheckEvents()
 {
 	sf::Event event;
 	while (m_window.pollEvent(event))
 	{
 		CheckKeyboardEvents(event);
 		CheckMouseEvents(event);
-		
+
 		if (event.type == sf::Event::Closed)
 		{
 			m_window.close();
@@ -90,12 +113,12 @@ void ÑGameScene::CheckEvents()
 	}
 }
 
-void ÑGameScene::CheckKeyboardEvents(const sf::Event & event)
+void CGameScene::CheckKeyboardEvents(const sf::Event & event)
 {
 	CheckKeyPressed(event);
 }
 
-void ÑGameScene::CheckKeyPressed(const sf::Event & event)
+void CGameScene::CheckKeyPressed(const sf::Event & event)
 {
 	if (event.type == sf::Event::KeyPressed)
 	{
@@ -109,7 +132,7 @@ void ÑGameScene::CheckKeyPressed(const sf::Event & event)
 	}
 }
 
-void ÑGameScene::ProcessUpdateData(const std::string & path)
+void CGameScene::ProcessUpdateData(const std::string & path)
 {
 	const auto data = json::parse(path);
 	const auto foodStringLength = data[KEY_FOOD].size();
@@ -120,20 +143,21 @@ void ÑGameScene::ProcessUpdateData(const std::string & path)
 	const auto playerStringLength = data[KEY_PLAYERS].size();
 	const auto table = data["t"];
 
+	m_tableNicknames.clear();
 	SetElementsForTable(table);
-	DrawPlayers(m_agarics, m_agar, players, m_heroId, m_agarView); 
+	DrawPlayers(m_agarics, m_agar, players, m_heroId, m_agarView);
 	DrawFood(m_meal, foodStringLength, food);
 	DrawEnemies(m_enemies, enemiesStringLength, enemies);
 }
 
-void ÑGameScene::SetTableTextPosition(const sf::Vector2f & center, float rowTop)
+void CGameScene::SetTableTextPosition(const sf::Vector2f & center, float rowTop)
 {
 	const int xCoord = WINDOW_SIZE.x / 2;
 	const int yCoord = -(WINDOW_SIZE.y / 2);
-	m_tableElement.setPosition(center + sf::Vector2f(xCoord - TABLE_SIZE.x + ROW_MARGIN, yCoord + rowTop));
+	m_tableElement.setPosition(center + sf::Vector2f(xCoord - TABLE_SIZE.x + MARGIN_LEFT, yCoord + rowTop));
 }
 
-void ÑGameScene::SetElementsForTable(const nlohmann::basic_json<> obj)
+void CGameScene::SetElementsForTable(const nlohmann::basic_json<> obj)
 {
 	for (auto & player : obj)
 	{
@@ -142,14 +166,7 @@ void ÑGameScene::SetElementsForTable(const nlohmann::basic_json<> obj)
 	}
 }
 
-const sf::Vector2f ÑGameScene::SetPosition(const sf::Vector2f & center)
-{
-	const int xCoord = WINDOW_SIZE.x / 2;
-	const int yCoord = -(WINDOW_SIZE.y / 2);
-	return (center + sf::Vector2f(xCoord, yCoord));
-}
-
-void ÑGameScene::DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const nlohmann::basic_json<> obj, std::string & id, CAgar & agarView)
+void CGameScene::DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const nlohmann::basic_json<> obj, std::string & id, CAgar & agarView)
 {
 	unsigned index = 0;
 	for (auto & player : obj)
@@ -179,7 +196,7 @@ void ÑGameScene::DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const n
 	}
 }
 
-void ÑGameScene::DrawEnemies(std::array<CEnemy, NUMBER_ENEMIES> & enemy, size_t arrSize, const nlohmann::basic_json<> obj)
+void CGameScene::DrawEnemies(std::array<CEnemy, NUMBER_ENEMIES> & enemy, size_t arrSize, const nlohmann::basic_json<> obj)
 {
 	for (size_t j = 0; j < arrSize; ++j)
 	{
@@ -190,7 +207,7 @@ void ÑGameScene::DrawEnemies(std::array<CEnemy, NUMBER_ENEMIES> & enemy, size_t 
 	}
 }
 
-void ÑGameScene::DrawFood(std::array<CMeal, NUMBER_MEAL> & meal, size_t arrSize, const nlohmann::basic_json<> obj)
+void CGameScene::DrawFood(std::array<CMeal, NUMBER_MEAL> & meal, size_t arrSize, const nlohmann::basic_json<> obj)
 {
 	for (size_t j = 0; j < arrSize; ++j)
 	{
@@ -201,18 +218,18 @@ void ÑGameScene::DrawFood(std::array<CMeal, NUMBER_MEAL> & meal, size_t arrSize,
 	}
 }
 
-void ÑGameScene::CheckMouseEvents(const sf::Event & event)
+void CGameScene::CheckMouseEvents(const sf::Event & event)
 {
 	if (event.type == sf::Event::MouseMoved)
 	{
-		m_mousePosition = { 
+		m_mousePosition = {
 			event.mouseMove.x,
 			event.mouseMove.y
 		};
 	}
 }
 
-void ÑGameScene::Update(float dt)
+void CGameScene::Update(float dt)
 {
 	(void)&dt;
 	json playerInfo;
@@ -224,15 +241,10 @@ void ÑGameScene::Update(float dt)
 	m_view.setCenter(m_agarView.GetPosition() + m_agarView.GetRadius() * sf::Vector2f(1, 1));
 	m_window.setView(m_view);
 	m_tableBackground.SetPosition(m_view.getCenter());
-	for (size_t j = 0; j < m_tableNicknames.size(); ++j)
-	{
-		m_tableElement.setString(m_tableNicknames[j]);
-		SetTableTextPosition(m_view.getCenter(), ROW_MARGIN * j);
-		m_window.draw(m_tableElement);
-	}
+	
 }
 
-void ÑGameScene::Render()
+void CGameScene::Render()
 {
 	m_window.clear(PURPLE);
 
@@ -250,8 +262,17 @@ void ÑGameScene::Render()
 	{
 		enemy.Draw(m_window);
 	}
-	
+
 	m_agarView.Draw(m_window);
 	m_tableBackground.Draw(m_window);
-	m_window.draw(m_tableElement);
+	for (size_t j = 0; j < m_tableNicknames.size(); ++j)
+	{
+		sf::Text tableElement;
+		m_tableElement.setFont(m_assets.ARIAL_FONT);
+		m_tableElement.setCharacterSize(FONT_SIZE);
+		m_tableElement.setFillColor(BLACK);
+		m_tableElement.setString(m_tableNicknames[j]);
+		SetTableTextPosition(m_view.getCenter(), ROW_MARGIN * j);
+		m_window.draw(m_tableElement);
+	}
 }

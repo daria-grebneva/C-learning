@@ -1,6 +1,7 @@
 #pragma once
 
 #include "targetver.h"
+
 #include <Windows.h>
 
 #define _USE_MATH_DEFINES // define to export M_PI
