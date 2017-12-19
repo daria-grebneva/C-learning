@@ -11,6 +11,8 @@
 #include "sheet.h"
 #include "RatingTable.h"
 
+using json = nlohmann::json;
+
 class CGameScene
 {
 public:
@@ -29,13 +31,13 @@ private:
 	void ProcessUpdateData(const std::string & path);
 	std::string GetId(const std::string & path) const;
 	void CheckMouseEvents(const sf::Event & event);
-	void DrawEnemies(std::array<CEnemy, NUMBER_ENEMIES> & enemy, size_t arrSize, const nlohmann::basic_json<> obj);
-	void DrawFood(std::array<CMeal, NUMBER_MEAL> & meal, size_t arrSize, const nlohmann::basic_json<> obj);
-	void DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const nlohmann::basic_json<> obj, std::string & id, CAgar & agarView);
-	void SetElementsForTable(const nlohmann::basic_json<> obj);
-	void SetTableTextPosition(const sf::Vector2f & center, float addingCoeff);
-	void DrawTable();
+	void DrawEnemies(std::array<CEnemy, NUMBER_ENEMIES> & enemy, size_t arrSize, const json & obj);
+	void DrawFood(std::array<CMeal, NUMBER_MEAL> & meal, size_t arrSize, const json & obj);
+	void DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const json & obj, std::string & id, CAgar & agarView);
+	const sf::Vector2f SetTableTextPosition(const sf::Vector2f & center, float addingCoeff);
+	void DrawTable() const;
 	void DrawConnectedInfo(bool isConnected);
+	void UpdateTable(const json & obj);
 
 	SceneType m_nextSceneType = SceneType::ÑGameScene;
 	sf::RenderWindow & m_window;
@@ -55,7 +57,7 @@ private:
 	CAudioPlayer m_audioPlayer;
 	SocketMaster & m_socketMaster;
 	RatingTable m_tableBackground;
-	sf::Text m_tableElement;
-	std::vector<std::string> m_tableNicknames;
-
+	std::vector<sf::Text> m_tableVector;
+	json m_table;
+	bool m_isDataInited = false;
 };

@@ -9,7 +9,7 @@ public:
 	RatingTable() = delete;
 	RatingTable(sf::RenderWindow & window, CAssets & assets);
 	void SetPosition(const sf::Vector2f & center);
-	void Draw(sf::RenderWindow & window);
+	void Draw(sf::RenderWindow & window) const;
 	sf::Vector2f GetPosition() const;
 
 private:

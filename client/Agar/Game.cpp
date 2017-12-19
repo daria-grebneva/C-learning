@@ -6,7 +6,7 @@
 namespace
 {
 
-static const auto PORT = "https://127.0.0.1:5000";
+static const auto PORT = "http://localhost:5000";
 
 }
 

@@ -5,31 +5,31 @@
 namespace
 {
 
-	static const unsigned FONT_SIZE = 30;
+static const unsigned FONT_SIZE = 30;
 
-	static const float ROW_MARGIN = 40;
+static const float ROW_MARGIN = 40;
 
-	static const float MARGIN_LEFT = 10;
+static const float MARGIN_LEFT = 10;
 
-	static const unsigned INFO_FONT_SIZE = 45;
+static const unsigned INFO_FONT_SIZE = 45;
 
-	static const unsigned INFO_FONT_STYLE = 2;
+static const unsigned INFO_FONT_STYLE = 2;
 
-	static const sf::Vector2f INFO_TEXT_MARGIN = { 670, 0 };
+static const sf::Vector2f INFO_TEXT_MARGIN = { 670, 0 };
 
-	static const std::string INFO_TEXT = "You have lost connection with the server, please restart the game";
+static const std::string INFO_TEXT = "You have lost connection with the server, please restart the game";
 
-	static const sf::Color BLACK = sf::Color::Black;
+static const sf::Color BLACK = sf::Color::Black;
 
-	sf::Color TakeJsonColor(nlohmann::basic_json<> colorObj)
-	{
-		const std::string color = colorObj.dump();
-		return {
-			uint8_t(std::stoi(color.substr(2, 2), nullptr, 16)),
-			uint8_t(std::stoi(color.substr(4, 2), nullptr, 16)),
-			uint8_t(std::stoi(color.substr(6, 2), nullptr, 16))
-		};
-	}
+sf::Color TakeJsonColor(const json & colorObj)
+{
+	const std::string color = colorObj.dump();
+	return {
+		uint8_t(std::stoi(color.substr(2, 2), nullptr, 16)),
+		uint8_t(std::stoi(color.substr(4, 2), nullptr, 16)),
+		uint8_t(std::stoi(color.substr(6, 2), nullptr, 16))
+	};
+}
 
 }
 
@@ -42,9 +42,10 @@ CGameScene::~CGameScene()
 
 CGameScene::CGameScene(sf::RenderWindow & window, CAssets assets, SocketMaster & socketMaster)
 	:m_socketMaster(socketMaster)
-	, m_audioPlayer(AUDIO_PATH)
-	, m_window(window)
-	, m_tableBackground(window, assets)
+	,m_audioPlayer(AUDIO_PATH)
+	,m_window(window)
+	,m_tableBackground(window, assets)
+	//,m_table(json())
 {
 	m_socketMaster.SetHandler(KEY_PLAYER_CREATED, [&](sio::event & e)
 	{
@@ -134,6 +135,7 @@ void CGameScene::CheckKeyPressed(const sf::Event & event)
 
 void CGameScene::ProcessUpdateData(const std::string & path)
 {
+	//std::cout << path << std::endl;
 	const auto data = json::parse(path);
 	const auto foodStringLength = data[KEY_FOOD].size();
 	const auto food = data[KEY_FOOD];
@@ -141,32 +143,73 @@ void CGameScene::ProcessUpdateData(const std::string & path)
 	const auto enemies = data[KEY_ENEMIES];
 	const auto players = data[KEY_PLAYERS];
 	const auto playerStringLength = data[KEY_PLAYERS].size();
-	const auto table = data["t"];
+	m_table = players;
 
-	m_tableNicknames.clear();
-	SetElementsForTable(table);
 	DrawPlayers(m_agarics, m_agar, players, m_heroId, m_agarView);
 	DrawFood(m_meal, foodStringLength, food);
 	DrawEnemies(m_enemies, enemiesStringLength, enemies);
+	m_isDataInited = true;
 }
 
-void CGameScene::SetTableTextPosition(const sf::Vector2f & center, float rowTop)
+void CGameScene::UpdateTable(const json & obj)
 {
-	const int xCoord = WINDOW_SIZE.x / 2;
-	const int yCoord = -(WINDOW_SIZE.y / 2);
-	m_tableElement.setPosition(center + sf::Vector2f(xCoord - TABLE_SIZE.x + MARGIN_LEFT, yCoord + rowTop));
-}
-
-void CGameScene::SetElementsForTable(const nlohmann::basic_json<> obj)
-{
+	size_t j = 0;
+	try
+	{
 	for (auto & player : obj)
 	{
-		std::string newStr = player["nickname"];
-		m_tableNicknames.push_back(newStr);
+		if (!player["nickname"].is_string())
+		{
+			return;
+		}
+		else
+		{
+			std::string newStr = player["nickname"].get<std::string>();
+			if (obj.size() > m_tableVector.size())
+			{
+				sf::Text temp;
+				temp.setFont(m_assets.ARIAL_FONT);
+				temp.setString(newStr);
+				temp.setCharacterSize(FONT_SIZE);
+				temp.setStyle(INFO_FONT_STYLE);
+				temp.setFillColor(BLACK);
+				m_tableVector.push_back(temp);
+			}
+			else 
+			{
+				if ((newStr == player["nickname"].get<std::string>()) && (m_tableVector.size() == m_table.size()))
+				{
+					m_tableVector[j].setString(newStr);
+					m_tableVector[j].setPosition(SetTableTextPosition(m_view.getCenter(), ROW_MARGIN * j));
+				}
+				else
+				{
+					m_tableVector[j].setString("");
+				}
+				
+			}
+			++j;
+		}		
+	}
+	}
+	catch (const std::exception & ex)
+	{
+		std::cerr << std::endl << std::endl << ex.what() << std::endl;
+	}
+	catch (...)
+	{
+		std::cerr << std::endl << std::endl << "fuck" << std::endl;
 	}
 }
 
-void CGameScene::DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const nlohmann::basic_json<> obj, std::string & id, CAgar & agarView)
+const sf::Vector2f CGameScene::SetTableTextPosition(const sf::Vector2f & center, float rowTop)
+{
+	const int xCoord = WINDOW_SIZE.x / 2;
+	const int yCoord = - (WINDOW_SIZE.y / 2);
+	return (center + sf::Vector2f(xCoord - TABLE_SIZE.x + MARGIN_LEFT, yCoord + rowTop));
+}
+
+void CGameScene::DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const json & obj, std::string & id, CAgar & agarView)
 {
 	unsigned index = 0;
 	for (auto & player : obj)
@@ -196,7 +239,7 @@ void CGameScene::DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const n
 	}
 }
 
-void CGameScene::DrawEnemies(std::array<CEnemy, NUMBER_ENEMIES> & enemy, size_t arrSize, const nlohmann::basic_json<> obj)
+void CGameScene::DrawEnemies(std::array<CEnemy, NUMBER_ENEMIES> & enemy, size_t arrSize, const json & obj)
 {
 	for (size_t j = 0; j < arrSize; ++j)
 	{
@@ -207,7 +250,7 @@ void CGameScene::DrawEnemies(std::array<CEnemy, NUMBER_ENEMIES> & enemy, size_t 
 	}
 }
 
-void CGameScene::DrawFood(std::array<CMeal, NUMBER_MEAL> & meal, size_t arrSize, const nlohmann::basic_json<> obj)
+void CGameScene::DrawFood(std::array<CMeal, NUMBER_MEAL> & meal, size_t arrSize, const json & obj)
 {
 	for (size_t j = 0; j < arrSize; ++j)
 	{
@@ -218,18 +261,15 @@ void CGameScene::DrawFood(std::array<CMeal, NUMBER_MEAL> & meal, size_t arrSize,
 	}
 }
 
-void CGameScene::DrawTable()
+void CGameScene::DrawTable() const
 {
 	m_tableBackground.Draw(m_window);
-	for (size_t j = 0; j < m_tableNicknames.size(); ++j)
+	//if (m_table.size() >= m_agarics.size())
 	{
-		sf::Text tableElement;
-		m_tableElement.setFont(m_assets.ARIAL_FONT);
-		m_tableElement.setCharacterSize(FONT_SIZE);
-		m_tableElement.setFillColor(BLACK);
-		m_tableElement.setString(m_tableNicknames[j]);
-		SetTableTextPosition(m_view.getCenter(), ROW_MARGIN * j);
-		m_window.draw(m_tableElement);
+		for (auto & tableElem : m_tableVector)
+		{
+			m_window.draw(tableElem);
+		}
 	}
 }
 
@@ -246,27 +286,34 @@ void CGameScene::CheckMouseEvents(const sf::Event & event)
 
 void CGameScene::Update(float dt)
 {
-	(void)&dt;
-	json playerInfo;
-	sf::Vector2f fieldSize(WINDOW_SIZE);
-	sf::Vector2f mousePos = m_agarView.GetPosition() - 0.5f * fieldSize + sf::Vector2f((float(m_mousePosition.x)), (float(m_mousePosition.y)));
-	playerInfo["x"] = mousePos.x / float(FIELD_SIZE.x);
-	playerInfo["y"] = mousePos.y / float(FIELD_SIZE.y);
-	m_socketMaster.Emit(KEY_MOVEMENT, playerInfo.dump());
-	m_view.setCenter(m_agarView.GetPosition() + m_agarView.GetRadius() * sf::Vector2f(1, 1));
-	m_window.setView(m_view);
-	m_tableBackground.SetPosition(m_view.getCenter());
-	
+	if (m_isDataInited)
+	{
+		(void)&dt;
+		json playerInfo;
+		sf::Vector2f fieldSize(WINDOW_SIZE);
+		sf::Vector2f mousePos = m_agarView.GetPosition() - 0.5f * fieldSize + sf::Vector2f((float(m_mousePosition.x)), (float(m_mousePosition.y)));
+		playerInfo["x"] = mousePos.x / float(FIELD_SIZE.x);
+		playerInfo["y"] = mousePos.y / float(FIELD_SIZE.y);
+		m_socketMaster.Emit(KEY_MOVEMENT, playerInfo.dump());
+		m_view.setCenter(m_agarView.GetPosition() + m_agarView.GetRadius() * sf::Vector2f(1, 1));
+		m_window.setView(m_view);
+		m_tableBackground.SetPosition(m_view.getCenter());
+		UpdateTable(m_table);
+	}
 }
 
 void CGameScene::Render()
 {
 	m_window.clear(PURPLE);
 
-	for (const auto & agar : m_agarics)
+	if (m_table.size() == m_agarics.size())
 	{
-		agar.Draw(m_window);
+		for (const auto & agar : m_agarics)
+		{
+			agar.Draw(m_window);
+		}
 	}
+
 
 	for (const auto & meal : m_meal)
 	{

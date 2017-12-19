@@ -5,8 +5,6 @@
 namespace
 {
 
-
-
 static const auto COLOR_CLIENT = sf::Color({ 159, 255, 34 });
 
 static const auto COLOR_ENEMY = sf::Color({ 199, 159, 40 });
@@ -27,7 +25,7 @@ sf::Vector2f RatingTable::GetPosition() const
 	return m_background.getPosition();
 }
 
-void RatingTable::Draw(sf::RenderWindow & window)
+void RatingTable::Draw(sf::RenderWindow & window) const
 {
 	window.draw(m_background);
 }
