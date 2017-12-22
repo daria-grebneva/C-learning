@@ -57,7 +57,7 @@ private:
 	CAudioPlayer m_audioPlayer;
 	SocketMaster & m_socketMaster;
 	RatingTable m_tableBackground;
-	std::vector<sf::Text> m_tableVector;
+	std::vector<sf::Text> m_allTableNicknames;
 	json m_table;
 	bool m_isDataInited = false;
 };

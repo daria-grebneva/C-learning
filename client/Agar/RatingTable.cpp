@@ -14,7 +14,6 @@ static const auto COLOR_ENEMY = sf::Color({ 199, 159, 40 });
 RatingTable::RatingTable(sf::RenderWindow & window, CAssets & assets)
 	:m_assets(assets)
 	,m_window(window)
-
 {
 	m_background.setSize(TABLE_SIZE);
 	m_background.setFillColor(sf::Color({ 37, 66, 144, 30 }));

@@ -21,6 +21,14 @@ static const std::string INFO_TEXT = "You have lost connection with the server, 
 
 static const sf::Color BLACK = sf::Color::Black;
 
+static const std::string KEY_ID = "i";
+
+static const std::string KEY_RADIUS = "r";
+
+static const std::string KEY_COLOR = "l";
+
+static const std::string KEY_NICKNAME = "n";
+
 sf::Color TakeJsonColor(const json & colorObj)
 {
 	const std::string color = colorObj.dump();
@@ -45,7 +53,6 @@ CGameScene::CGameScene(sf::RenderWindow & window, CAssets assets, SocketMaster &
 	,m_audioPlayer(AUDIO_PATH)
 	,m_window(window)
 	,m_tableBackground(window, assets)
-	//,m_table(json())
 {
 	m_socketMaster.SetHandler(KEY_PLAYER_CREATED, [&](sio::event & e)
 	{
@@ -69,7 +76,7 @@ CGameScene::CGameScene(sf::RenderWindow & window, CAssets assets, SocketMaster &
 
 std::string CGameScene::GetId(const std::string & path) const
 {
-	return json::parse(path)["id_player"];
+	return json::parse(path)[KEY_ID];
 }
 
 SceneInfo CGameScene::Advance(float dt, bool isConnected)
@@ -135,7 +142,6 @@ void CGameScene::CheckKeyPressed(const sf::Event & event)
 
 void CGameScene::ProcessUpdateData(const std::string & path)
 {
-	//std::cout << path << std::endl;
 	const auto data = json::parse(path);
 	const auto foodStringLength = data[KEY_FOOD].size();
 	const auto food = data[KEY_FOOD];
@@ -154,51 +160,30 @@ void CGameScene::ProcessUpdateData(const std::string & path)
 void CGameScene::UpdateTable(const json & obj)
 {
 	size_t j = 0;
-	try
+	for (auto & tableElem : m_allTableNicknames)
 	{
+		tableElem.setString("");
+	}
+	while (m_allTableNicknames.size() < obj.size())
+	{
+		sf::Text temp;
+		temp.setFont(m_assets.ARIAL_FONT);
+		temp.setString("");
+		temp.setCharacterSize(FONT_SIZE);
+		temp.setStyle(INFO_FONT_STYLE);
+		temp.setFillColor(BLACK);
+		m_allTableNicknames.push_back(temp);
+	}
 	for (auto & player : obj)
 	{
-		if (!player["nickname"].is_string())
+		const auto currentNickname = player[KEY_NICKNAME];
+		if (!currentNickname.is_string())
 		{
 			return;
 		}
-		else
-		{
-			std::string newStr = player["nickname"].get<std::string>();
-			if (obj.size() > m_tableVector.size())
-			{
-				sf::Text temp;
-				temp.setFont(m_assets.ARIAL_FONT);
-				temp.setString(newStr);
-				temp.setCharacterSize(FONT_SIZE);
-				temp.setStyle(INFO_FONT_STYLE);
-				temp.setFillColor(BLACK);
-				m_tableVector.push_back(temp);
-			}
-			else 
-			{
-				if ((newStr == player["nickname"].get<std::string>()) && (m_tableVector.size() == m_table.size()))
-				{
-					m_tableVector[j].setString(newStr);
-					m_tableVector[j].setPosition(SetTableTextPosition(m_view.getCenter(), ROW_MARGIN * j));
-				}
-				else
-				{
-					m_tableVector[j].setString("");
-				}
-				
-			}
-			++j;
-		}		
-	}
-	}
-	catch (const std::exception & ex)
-	{
-		std::cerr << std::endl << std::endl << ex.what() << std::endl;
-	}
-	catch (...)
-	{
-		std::cerr << std::endl << std::endl << "fuck" << std::endl;
+		m_allTableNicknames[j].setString(currentNickname.get<std::string>());
+		m_allTableNicknames[j].setPosition(SetTableTextPosition(m_view.getCenter(), ROW_MARGIN * j));
+		++j;
 	}
 }
 
@@ -216,21 +201,21 @@ void CGameScene::DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const j
 	{
 		if (obj.size() > agarics.size())
 		{
-			agar.SetColor(TakeJsonColor(player["color"]));
+			agar.SetColor(TakeJsonColor(player[KEY_COLOR]));
 			agar.SetPosition(sf::Vector2f((float(player["x"]) *  float(FIELD_SIZE.x)), (float(player["y"]) *  float(FIELD_SIZE.y))));
-			agar.SetRadius(float(player["radius"]) * FIELD_COEF);
+			agar.SetRadius(float(player[KEY_RADIUS]) * FIELD_COEF);
 			agarics.push_back(agar);
-			if (player["id_player"] == id)
+			if (player[KEY_ID] == id)
 			{
 				agarView = agar;
 			}
 		}
 		else
 		{
-			agarics[index].SetColor(TakeJsonColor(player["color"]));
+			agarics[index].SetColor(TakeJsonColor(player[KEY_COLOR]));
 			agarics[index].SetPosition(sf::Vector2f((float(player["x"]) *  float(FIELD_SIZE.x)), (float(player["y"]) *  float(FIELD_SIZE.y))));
-			agarics[index].SetRadius(float(player["radius"]) * FIELD_COEF);
-			if (player["id_player"] == id)
+			agarics[index].SetRadius(float(player[KEY_RADIUS]) * FIELD_COEF);
+			if (player[KEY_ID] == id)
 			{
 				agarView = agarics[index];
 			}
@@ -243,10 +228,10 @@ void CGameScene::DrawEnemies(std::array<CEnemy, NUMBER_ENEMIES> & enemy, size_t 
 {
 	for (size_t j = 0; j < arrSize; ++j)
 	{
-		auto colorEnemy = obj[j]["color"];
+		auto colorEnemy = obj[j][KEY_COLOR];
 		enemy[j].SetColor(TakeJsonColor(colorEnemy));
 		enemy[j].SetPosition(sf::Vector2f(float(obj[j]["x"]) * FIELD_SIZE.x, float(obj[j]["y"]) * FIELD_SIZE.y));
-		enemy[j].SetRadius(float(obj[j]["radius"]) * FIELD_COEF);
+		enemy[j].SetRadius(float(obj[j][KEY_RADIUS]) * FIELD_COEF);
 	}
 }
 
@@ -254,19 +239,18 @@ void CGameScene::DrawFood(std::array<CMeal, NUMBER_MEAL> & meal, size_t arrSize,
 {
 	for (size_t j = 0; j < arrSize; ++j)
 	{
-		auto colorEnemy = obj[j]["color"];
+		auto colorEnemy = obj[j][KEY_COLOR];
 		meal[j].SetColor(TakeJsonColor(colorEnemy));
 		meal[j].SetPosition(sf::Vector2f(float(obj[j]["x"]) * FIELD_SIZE.x, float(obj[j]["y"]) * FIELD_SIZE.y));
-		meal[j].SetRadius(float(obj[j]["radius"]) * FIELD_COEF);
+		meal[j].SetRadius(float(obj[j][KEY_RADIUS]) * FIELD_COEF);
 	}
 }
 
 void CGameScene::DrawTable() const
 {
 	m_tableBackground.Draw(m_window);
-	//if (m_table.size() >= m_agarics.size())
 	{
-		for (auto & tableElem : m_tableVector)
+		for (auto & tableElem : m_allTableNicknames)
 		{
 			m_window.draw(tableElem);
 		}
@@ -313,7 +297,6 @@ void CGameScene::Render()
 			agar.Draw(m_window);
 		}
 	}
-
 
 	for (const auto & meal : m_meal)
 	{

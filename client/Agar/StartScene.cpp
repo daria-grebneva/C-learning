@@ -158,8 +158,7 @@ void CStartScene::CheckKeyPressed(const sf::Event & event, bool isConnected)
 		{
 		case sf::Keyboard::Return:
 			m_nextSceneType = SceneType::ÑGameScene;
-			m_socket.Emit(KEY_NEW_PLAYER, m_nickname); //!!!
-			//m_socket.Emit(KEY_NICKNAME, m_nickname);
+			m_socket.Emit(KEY_NEW_PLAYER, m_nickname); 
 		default:
 			break;
 		}
