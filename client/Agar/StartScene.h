@@ -15,12 +15,12 @@ public:
 
 private:
 	void Update(float dt);
-	void Render();
+	void Render() const;
 	void CheckEvents(bool isConnected);
 	void CheckKeyPressed(const sf::Event & event, bool isConnected);
 	void CheckKeyboardEvents(const sf::Event & event, bool isConnected);
 	void CheckInputText(const sf::Event & event);
-	void DrawConnectedInfo(bool isConnected);
+	void DrawConnectedInfo(bool isConnected) const;
 	bool IsNicknameStringEmpty() const;
 
 	CAssets & m_assets;

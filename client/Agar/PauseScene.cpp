@@ -70,7 +70,7 @@ void CPauseScene::Update(float dt)
 	(void)&dt;
 }
 
-void CPauseScene::Render()
+void CPauseScene::Render() const
 {
 	m_window.clear(sf::Color::White);
 	m_window.draw(m_background);

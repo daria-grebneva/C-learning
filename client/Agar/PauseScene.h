@@ -15,7 +15,7 @@ public:
 
 private:
 	void Update(float dt);
-	void Render();
+	void Render() const;
 	void CheckEvents();
 	void CheckKeyPressed(const sf::Event & event);
 	void CheckKeyboardEvents(const sf::Event & event);

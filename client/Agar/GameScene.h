@@ -26,18 +26,18 @@ private:
 	void CheckKeyboardEvents(const sf::Event & event);
 	void CheckKeyPressed(const sf::Event & event);
 	void Update(float dt);
-	void Render();
+	void Render() const;
 	void CheckEvents();
 	void ProcessUpdateData(const std::string & path);
 	std::string GetId(const std::string & path) const;
 	void CheckMouseEvents(const sf::Event & event);
-	void DrawEnemies(std::array<CEnemy, NUMBER_ENEMIES> & enemy, size_t arrSize, const json & obj);
-	void DrawFood(std::array<CMeal, NUMBER_MEAL> & meal, size_t arrSize, const json & obj);
-	void DrawPlayers(std::vector<CAgar> & agarics, CAgar & agar, const json & obj, std::string & id, CAgar & agarView);
+	void UpdateEnemies(size_t arrSize, const json & obj);
+	void UpdateFood(size_t arrSize, const json & obj);
+	void UpdatePlayers(const json & obj);
 	const sf::Vector2f SetTableTextPosition(const sf::Vector2f & center, float addingCoeff);
 	void DrawTable() const;
-	void DrawConnectedInfo(bool isConnected);
-	void UpdateTable(const json & obj);
+	void DrawConnectedInfo(bool isConnected) const;
+	void UpdateTable();
 
 	SceneType m_nextSceneType = SceneType::ÑGameScene;
 	sf::RenderWindow & m_window;

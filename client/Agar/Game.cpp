@@ -6,13 +6,13 @@
 namespace
 {
 
-static const auto PORT = "http://146.185.243.128:5000";
+static const auto HOST = "http://146.185.243.128:5000";
 
 }
 
 CGame::CGame()
 	:m_window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), WINDOW_TITLE, WINDOW_STYLE)
-	,m_socketMaster(PORT)
+	,m_socketMaster(HOST)
 	,m_gameScene(m_window, m_assets, m_socketMaster)
 	,m_pauseScene(m_window, m_assets)
 	,m_startScene(m_window, m_assets, m_socketMaster)

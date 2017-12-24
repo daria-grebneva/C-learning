@@ -57,6 +57,8 @@ CStartScene::CStartScene(sf::RenderWindow & window, CAssets & assets, SocketMast
 	m_informationText.setCharacterSize(INFO_FONT_SIZE);
 	m_informationText.setStyle(INFO_FONT_STYLE);
 	m_informationText.setFillColor(BLACK);
+
+	m_background.setTexture(m_assets.START_BACKGROUND);
 }
 
 SceneInfo CStartScene::Advance(float dt, bool isConnected)
@@ -117,7 +119,7 @@ void CStartScene::CheckInputText(const sf::Event & event)
 	}
 }
 
-void CStartScene::DrawConnectedInfo(bool isConnected)
+void CStartScene::DrawConnectedInfo(bool isConnected) const
 {
 	if (!isConnected)
 	{
@@ -170,10 +172,9 @@ void CStartScene::Update(float dt)
 	(void)&dt;
 }
 
-void CStartScene::Render()
+void CStartScene::Render() const
 {
 	m_window.clear(sf::Color::White);
-	m_background.setTexture(m_assets.START_BACKGROUND);
 	m_window.draw(m_background);
 	m_window.draw(m_text);
 }
