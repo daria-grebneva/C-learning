@@ -297,6 +297,7 @@ void CGameScene::Update(float dt)
 		m_window.setView(m_view);
 		m_tableBackground.SetPosition(m_view.getCenter());
 		UpdateTable();
+		m_audioPlayer.Update(dt);
 	}
 }
 
