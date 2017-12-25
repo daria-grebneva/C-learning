@@ -64,7 +64,7 @@ CGameScene::CGameScene(sf::RenderWindow & window, CAssets assets, SocketMaster &
 	{
 		ProcessUpdateData(e.get_message()->get_string());
 	});
-	m_audioPlayer.SetVolume(0);
+	m_audioPlayer.SetVolume(100);
 	const sf::VideoMode videoMode(WINDOW_SIZE.x, WINDOW_SIZE.y);
 	sf::ContextSettings contextSettings;
 	contextSettings.antialiasingLevel = ANTIALIASING_LEVEL;
@@ -179,13 +179,15 @@ void CGameScene::UpdateTable()
 	for (auto & data : m_table)
 	{
 		const auto nickname = data;
-		
-		if (!nickname.is_string())
+		if (j < 7)
 		{
-			return;
+			if (!nickname.is_string())
+			{
+				return;
+			}
+			m_allTableNicknames[j].setString(nickname.get<std::string>());
+			m_allTableNicknames[j].setPosition(SetTableTextPosition(m_view.getCenter(), ROW_MARGIN * j));
 		}
-		m_allTableNicknames[j].setString(nickname.get<std::string>());
-		m_allTableNicknames[j].setPosition(SetTableTextPosition(m_view.getCenter(), ROW_MARGIN * j));
 		++j;
 	}
 }

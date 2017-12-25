@@ -6,7 +6,8 @@
 namespace
 {
 
-static const auto HOST = "http://146.185.243.128:5000";
+//static const auto HOST = "http://146.185.243.128:5000";
+static const auto HOST = "http://localhost:5000";
 
 }
 
