@@ -29,6 +29,8 @@ static const std::string KEY_COLOR = "l";
 
 static const std::string KEY_NICKNAME = "n";
 
+static const std::string KEY_TABLE = "z";
+
 sf::Color TakeJsonColor(const json & colorObj)
 {
 	const std::string color = colorObj.dump();
@@ -149,7 +151,7 @@ void CGameScene::ProcessUpdateData(const std::string & path)
 	const auto enemies = data[KEY_ENEMIES];
 	const auto players = data[KEY_PLAYERS];
 	const auto playerStringLength = data[KEY_PLAYERS].size();
-	m_table = players;
+	m_table = data[KEY_TABLE];
 
 	UpdatePlayers(players);
 	UpdateFood(foodStringLength, food);
@@ -174,9 +176,10 @@ void CGameScene::UpdateTable()
 		m_allTableNicknames.push_back(temp);
 	}
 	size_t j = 0;
-	for (auto & player : m_table)
+	for (auto & data : m_table)
 	{
-		const auto nickname = player[KEY_NICKNAME];
+		const auto nickname = data;
+		
 		if (!nickname.is_string())
 		{
 			return;
