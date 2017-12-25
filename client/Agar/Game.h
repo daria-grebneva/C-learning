@@ -18,7 +18,7 @@ private:
 	SocketMaster m_socketMaster;
 	CAssets m_assets;
 	sf::Clock m_clock;
-	sf::RenderWindow m_window;
+	mutable sf::RenderWindow m_window;
 	CGameScene m_gameScene;
 	CPauseScene m_pauseScene;
 	CStartScene m_startScene;
